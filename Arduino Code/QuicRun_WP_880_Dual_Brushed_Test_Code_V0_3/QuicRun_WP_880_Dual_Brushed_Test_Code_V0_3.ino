@@ -1,6 +1,21 @@
-#include <Servo.h>
-const int pwm1 = 6; // pin 6 as pwm
-Servo servo;
+//Goal: Code the motors to be control by a potentiometer using function
+//Created By: Alexander Ov
+//Created On: 9/13/23
+//Version 0.3
+//Updates: 
+/*
+//General Notes:
+OBSOLETE CODE
+//Progress Report Notes
+
+*/
+
+//Libraries
+#include <Servo.h>                        //Servo lib
+const int pwm1 = 6;                       //pwm pin decleration
+
+//Object Decleration
+Servo servo;                              //Create servo object to control the Battery Transfer Pod's DC Motors
 
 void motorSpin(long pos){
   servo.attach(pos);
@@ -21,7 +36,8 @@ void loop() {
   //   servo.write(pos);              // tell servo to go to position in variable 'pos'
   //   delay(15);                       // waits 15 ms for the servo to reach the position
   // }
-  for(int i = 90; i <=120;i+=1){
+  for(int i = 90; i <=100;i+=1)
+  {
     servo.write(i);
     delay(1000);
   }

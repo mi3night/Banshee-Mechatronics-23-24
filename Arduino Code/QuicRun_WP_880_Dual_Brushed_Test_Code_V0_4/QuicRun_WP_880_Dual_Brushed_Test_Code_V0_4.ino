@@ -1,6 +1,8 @@
 //Goal: have it crawl along the rail and respond to ultrasonic sensor
-#include <Servo.h>
-const int pwm1 = 6; // pin 6 as pwm
+//Updates pwm1 on pcb doesnt work so we will have to use pwm1 for "pwm2" and power for "dir"
+#include <Servo.h> 
+const int power = 5; //9 works
+const int pwm1 = 10; // pin 6 as pwm
 const int trigPin = 9;
 const int echoPin = 10;
 
@@ -14,14 +16,24 @@ void setup() {
   servo.attach(6, 1000, 2000);
   pinMode(pwm1, OUTPUT); //declare pin pwm as OUTPUT
   pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT)
+  pinMode(echoPin, INPUT);
+  pinMode(power, OUTPUT);
+  digitalWrite(power, HIGH);
   servo.write(95);
   delay(5000);
 }
 
 void loop() {
-  servo.write(100);
-  delay(2000);
-  servo.write(80);
-  delay(2000);
+  if(power){
+    servo.write(97);
+    Serial.println("Forward");
+    delay(2000);
+    servo.write(90);
+    delay(2000);
+    servo.write(83);
+    Serial.println("Backward");
+    delay(2000);
+    servo.write(90);
+    digitalWrite(power,LOW);
+  }
 }
