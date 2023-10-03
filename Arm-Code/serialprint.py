@@ -1,18 +1,18 @@
 import serial
-import syslog
 import time
 
-#The following line is for serial over GPIO
+ser = serial.Serial('COM4', 115200, timeout=1)
+time.sleep(1)
+counter = 0
 
-ser = serial.Serial(
-    port='/dev/cu.usbserial-1140',
-    baudrate=115200,
-    parity=serial.PARITY_ODD,
-    stopbits=serial.STOPBITS_TWO,
-    bytesize=serial.SEVENBITS
-)
+while True:
+    ser.write((str(counter)).encode())
+    print("Sent:", counter)
+    counter += 1
 
-while(True):
-    print(ser.readline())
+    time.sleep(0.1)  # Add a small delay (e.g., 100 ms) to allow Arduino to process and clear the buffer
 
-ser.close()
+    response = ser.readline().strip()
+    print("Received:", response.decode())
+
+    time.sleep(0.1)  # Add another small delay before sending the next value
