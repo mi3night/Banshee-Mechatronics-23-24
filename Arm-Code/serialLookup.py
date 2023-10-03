@@ -9,11 +9,11 @@ for onePort in ports:
     portsList.append(str(onePort))
     print(str(onePort))
 
-val = input("Select Port: COM")
+val = input("Select Port:")
 
 for x in range(0,len(portsList)):
-    if portsList[x].startswith("COM" + str(val)):
-        portVar = "COM" + str(val)
+    if portsList[x].startswith(str(val)):
+        portVar = str(val)
         print(portVar)
 
 serialInst.baudrate = 9600
