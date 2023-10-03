@@ -58,7 +58,6 @@ void setup() {
 }
 
 void loop() {
-  delay(6000);
   if(power){
     digitalWrite(11,HIGH);
     servoFront.write(98);
@@ -70,14 +69,16 @@ void loop() {
     servoBack.write(90);
     Serial.println("Servo reset");
     delay(10000);
-    // servoFront.write(83);
-    // servoBack.write(83);
-    // Serial.println("Forward");
-    // delay(3000);
-    // servoFront.write(90);
-    // servoBack.write(90);
-    // Serial.println("Servo reset");
-    // delay(10000);
-    // digitalWrite(power,LOW);
+    digitalWrite(11,HIGH);
+    servoFront.write(70);
+    servoBack.write(70);
+    Serial.println("Forward");
+    delay(3000);
+    digitalWrite(led,LOW);
+    servoFront.write(90);
+    servoBack.write(90);
+    Serial.println("Servo reset");
+    delay(10000);
+    digitalWrite(power,LOW);
   }
 }
