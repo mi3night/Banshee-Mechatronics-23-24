@@ -27,11 +27,10 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
 motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4]) #ALWAYS SET SPEED BEFORE ANYTHING
-motor.simMotorRun([30, 227, 270, 47, 272], [0,1,2,3,4]) #resting
-time.sleep(3)
+
 motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4])
 motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4]) #set chamber
-time.sleep(3)
+time.sleep(4)
 motor.simMotorRun([31, 223, 90, 222, 190], [0, 1, 2, 3, 4]) #grab battery
 time.sleep(2)
 motor.dxlSetVelo([20, 20, 20, 40, 26],[0, 1, 2, 3, 4]) 
