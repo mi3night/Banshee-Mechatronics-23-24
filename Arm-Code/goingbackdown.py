@@ -16,7 +16,7 @@ FOREARM_ID = 3
 WRIST_ID = 4
 CLAW_ID = 0
 
-PORT_NUM = '/dev/tty.usbserial-FT5NY9DI'
+PORT_NUM = '/dev/tty/USB0'
 
 BAUDRATE = 1000000
 
@@ -33,12 +33,6 @@ motor.simMotorRun([187], [2])  # back to pull down more
 time.sleep(3)
 motor.simMotorRun([150, 80], [2,3])
 time.sleep(3)
-
 motor.dxlSetVelo([20, 20, 20, 40, 26],[0, 1, 2, 3, 4])
-#motor.simMotorRun([135, 104, 265], [2, 3, 4]) #back to pull down
-#time.sleep(2)
 motor.simMotorRun([25, 227, 130, 130, 250], [0, 1, 2, 3, 4])  #push in
 motor.simMotorRun([25, 227, 90, 222, 194], [0, 1, 2, 3, 4])
-#time.sleep(3)
-#motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4])
-#motor.simMotorRun([90, 223, 90, 222, 194], [0, 1, 2, 3, 4]) # Let gos
