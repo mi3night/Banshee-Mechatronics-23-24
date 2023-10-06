@@ -25,6 +25,9 @@ Update:
 3. Deleted the unnecessary Print statement. 
 4. Turned the variable "Direction" to char so we can easily identify the pod's direction.
 
+Modified by Matthew
+took out all the parameters and funtions and placed them into header files. 
+
 10/04/23
 Switch serial input if statements to be positive ints only GCS = 1 BVM = 2
 
