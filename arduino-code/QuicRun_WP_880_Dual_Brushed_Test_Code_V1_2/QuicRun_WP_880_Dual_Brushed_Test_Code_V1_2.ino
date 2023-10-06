@@ -18,6 +18,14 @@ GCS Request Battery -> BTP RPI sends signal to arm for extraction -> BTP RPI sen
 Updates:
 V1.0 Updates
 10/04/23
+Modified by Jin
+Update: 
+1. Added a function that resets the pod to the start point (GCS).
+2. Organized the comment of each line.
+3. Deleted the unnecessary Print statement. 
+4. Turned the variable "Direction" to char so we can easily identify the pod's direction.
+
+10/04/23
 Switch serial input if statements to be positive ints only GCS = 1 BVM = 2
 
 10/03/23
@@ -31,13 +39,6 @@ Added code to test out the pod movement without rasberry pi input
 V0.9 Updates
 10/02/23
 Changed pinouts to match the PCB
-10/04/23
-Modified by Jin
-Update: 
-1. Added a function that resets the pod to the start point (GCS).
-2. Organized the comment of each line.
-3. Deleted the unnecessary Print statement. 
-4. Turned the variable "Direction" to char so we can easily identify the pod's direction.
 
 //General Notes:
 Possiblely need streaming.h but from light research it just changes how to take in IO streams of data "C++-style Output with Operator"
