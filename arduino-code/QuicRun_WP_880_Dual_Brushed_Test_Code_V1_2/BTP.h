@@ -1,5 +1,12 @@
 //#include "Arduino.h"
 // ** add header files to libraries folder in arduino ide
+// header file containing all funtion definitions: Sensewall, default_mode, gradientControl, Reverse
+
+//10/4/2023
+// created by Matthew Alaniz, 
+//sourced from the QuicRun_WP_880_Dual_Brushed_Test_Code_V1 
+//header file containing funtion definitions
+
 #ifndef _BTP_H   
 #define _BTP_H    
 
