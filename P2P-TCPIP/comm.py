@@ -1,26 +1,18 @@
 import socket
 
-# Define the server's IP address and port to connect to
+SERVER_HOST = '192.168.7.240'  # Replace with the actual IP address of the Windows server
+SERVER_PORT = 12345
 
-server_ip = '192.168.5.178'  # Replace with the actual server's IP address
-server_port = 12345  # Replace with the actual server's port number
-
-# Create a socket object
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect((SERVER_HOST, SERVER_PORT))
 
-try:
-    # Connect to the server
-    client_socket.connect((server_ip, server_port))
-except Exception as e:
-    print("Error:", str(e))
+while True:
+    message = input("Enter a message to send to Windows (or 'exit' to quit): ")
+    if message.lower() == 'exit':
+        break
+    client_socket.send(message.encode())
 
-    
-# Receive data from the server
-data = client_socket.recv(1024)
+    response = client_socket.recv(1024)
+    print(f"Received from Windows: {response.decode()}")
 
-# Check if the server has closed the connection
-if not data:
-    print("Connection closed by the server.")
-else:
-    # Decode and print the received data
-    print("Received:", data.decode('utf-8'))
+client_socket.close()
