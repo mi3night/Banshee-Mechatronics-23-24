@@ -6,6 +6,8 @@ import time
 import serial
 import cv2
 import socket
+
+
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
@@ -32,11 +34,14 @@ client_socket.connect((SERVER_HOST, SERVER_PORT))
 
 
 
-#TCP IP request from GCS
+#TCP IP request from GCS. 
 while True:
     response = client_socket.recv(1024)
     if response.decode() == 'ready':
         break
+
+#Take Battery from GCS
+
 
 time.sleep(4)
 motor.portInitialization(PORT_NUM, ALL_IDs)
@@ -53,12 +58,19 @@ time.sleep(3)
 motor.simMotorRun([30, 227, 270, 47, 272], [0,1,2,3,4]) #resting 
 
 
-#push battery back in
 
-ser.write(b'g')
-while arduinoinput != 's':
+ser.write(b'g') #Tell Arduino it's good to go
+
+#Wait for arduino to send s, means it has arrived at BVM
+while True:
     response = ser.readline().strip()
     arduinoinput = response.decode()
+    if arduinoinput == 's':
+        print("push battery into BVM!")
+        break
+
+
+#Push battery into BVM
 
 time.sleep(7)
 motor.simMotorRun([187], [2])  # back to pull down more
@@ -74,5 +86,56 @@ time.sleep(3)
 motor.simMotorRun([30, 227, 270, 47, 272], [0,1,2,3,4]) 
 time.sleep(7)
 motor.simMotorRun([30, 227, 301, 49, 143], [0,1,2,3,4]) 
+
+
+time.sleep(5) #let BVM cycle battery
+
+#Take battery out of BVM
+
+motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4]) #ALWAYS SET SPEED BEFORE ANYTHING
+motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4]) #set chamber
+time.sleep(4)
+motor.simMotorRun([31, 223, 90, 222, 190], [0, 1, 2, 3, 4]) #grab battery
+time.sleep(2)
+motor.dxlSetVelo([20, 20, 20, 40, 26],[0, 1, 2, 3, 4]) 
+motor.simMotorRun([129, 104, 285], [2, 3, 4]) #pull out
+motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4])
+motor.simMotorRun([137, 62, 285], [2, 3, 4]) #pull out more
+time.sleep(3)
+motor.simMotorRun([30, 227, 270, 47, 272], [0,1,2,3,4]) #resting 
+
+
+ser.write(b'g') #Tell Arduino it's good to go
+
+#Wait for arduino to send s, means it has arrived at GCS
+while True:
+    response = ser.readline().strip()
+    arduinoinput = response.decode()
+    if arduinoinput == 's':
+        print("push battery into GCS!")
+        break
+
+
+#Push battery into GCS
+
+time.sleep(7)
+motor.simMotorRun([187], [2])  # back to pull down more
+time.sleep(3)
+motor.simMotorRun([150, 80], [2,3])
+time.sleep(3)
+motor.dxlSetVelo([20, 20, 20, 40, 26],[0, 1, 2, 3, 4])
+motor.simMotorRun([25, 227, 130, 130, 250], [0, 1, 2, 3, 4])  #push in
+motor.simMotorRun([25, 227, 90, 222, 194], [0, 1, 2, 3, 4])
+time.sleep(3)
+motor.simMotorRun([90, 227, 90, 222, 194], [0, 1, 2, 3, 4])
+time.sleep(3)
+motor.simMotorRun([30, 227, 270, 47, 272], [0,1,2,3,4]) 
+time.sleep(7)
+motor.simMotorRun([30, 227, 301, 49, 143], [0,1,2,3,4]) 
+
+
+#Tell GCS it's good to go
+message = 'Finished'
+client_socket.send(message.encode())
 
 
