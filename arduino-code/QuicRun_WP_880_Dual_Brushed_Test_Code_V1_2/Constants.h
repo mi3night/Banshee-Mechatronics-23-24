@@ -1,3 +1,11 @@
+//#include "Arduino.h"
+// ** add header files to libraries folder in arduino ide
+//header file containin all the constants/varaibles used by the pod's main script
+
+//Created by Matthew Alaniz, soruced from QuicRun_WP_880_Dual_Brushed_Test_Code_V1
+//10/4/2023
+
+
 #ifndef _CONSTANTS_H   
 #define _CONSTANTS_H 
 #include <Servo.h>                        //Servo lib
