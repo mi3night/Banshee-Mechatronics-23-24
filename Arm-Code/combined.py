@@ -172,13 +172,9 @@ def pushin():
     motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
 
 
-ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-
 motor.portInitialization(PORT_NUM, ALL_IDs)
 motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4]) #ALWAYS SET SPEED BEFORE ANYTHING
 motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4]) #set chamber
-
 
 
 
@@ -275,7 +271,3 @@ while (MOVEARM_MODE):
             client_socket.send(message.encode())
             
             
-            
-            
-
-
