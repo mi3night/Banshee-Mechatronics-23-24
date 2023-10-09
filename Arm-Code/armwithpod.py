@@ -1,7 +1,3 @@
-
-
-
-
 import math
 import motorctrl_v1 as motor
 import Movement_Calc_v2 as calculation
@@ -18,9 +14,13 @@ CLAW_ID = 0
 
 arduinoinput = ''
 
+#Need to make a function that automatically searches for the port number
+#similar to the one in serial lookup.py but use string search to auto
+#select arm serial port and arduino serial port
+#Might not have to do since after testing the arm stays at /dev/ttyUSB0
 #PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
-PORT_NUM = '/dev/ttyUSB0' #for rpi
-ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1) #for rpi
+PORT_NUM = '/dev/ttyUSB0' #for arm
+ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1) #for arduino
 
 
 BAUDRATE = 1000000
@@ -55,6 +55,7 @@ motor.simMotorRun([30, 227, 270, 47, 272], [0,1,2,3,4]) #resting
 #push battery back in
 
 ser.write(b'g')
+
 while arduinoinput != 's':
     response = ser.readline().strip()
     arduinoinput = response.decode()
