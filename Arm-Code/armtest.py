@@ -1,7 +1,3 @@
-
-
-
-
 import math
 import motorctrl_v1 as motor
 import Movement_Calc_v2 as calculation
