@@ -19,8 +19,8 @@ arduinoinput = ''
 #select arm serial port and arduino serial port
 #Might not have to do since after testing the arm stays at /dev/ttyUSB0
 #PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
-PORT_NUM = '/dev/ttyUSB0' #for arm
-ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1) #for arduino
+PORT_NUM = '/dev/ttyUSB1' #for arm
+ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1) #for arduino
 
 
 BAUDRATE = 1000000
