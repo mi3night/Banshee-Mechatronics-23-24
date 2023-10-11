@@ -81,7 +81,9 @@ pullout()
 while True:
     # response = ser.readline().strip()
     # arduinoinput = response.decode()
+    print("wait for arduino input")
     arduinoinput = 's'
+    time.sleep(3)
     if arduinoinput == 's':
         print("push battery into BVM!")
         break
