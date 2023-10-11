@@ -13,13 +13,13 @@ client_socket, client_address = server_socket.accept()
 print(f"Connected to {client_address}")
 
 while True:
+    response = input("Enter a response: ")
+    client_socket.send(response.encode())
     data = client_socket.recv(1024)
     if not data:
         break
     print(f"Received from Windows: {data.decode()}")
 
-    response = input("Enter a response: ")
-    client_socket.send(response.encode())
 
 client_socket.close()
 server_socket.close()

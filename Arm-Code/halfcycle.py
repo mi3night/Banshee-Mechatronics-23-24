@@ -31,8 +31,7 @@ client_socket.connect((SERVER_HOST, SERVER_PORT))
 
 
 def pullout():
-    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4]
-                     )  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
     time.sleep(4)
     motor.simMotorRun([31, 223, 90, 222, 190], [0, 1, 2, 3, 4])  # grab battery
