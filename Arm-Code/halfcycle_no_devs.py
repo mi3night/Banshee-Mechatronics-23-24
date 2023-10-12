@@ -93,3 +93,4 @@ while True:
 
 # Push battery into BVM
 pushin()
+GPIO.cleanup()
