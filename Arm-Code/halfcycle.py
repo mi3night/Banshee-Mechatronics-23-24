@@ -29,6 +29,7 @@ SERVER_PORT = 12345
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((SERVER_HOST, SERVER_PORT))
 
+motor.portInitialization(PORT_NUM, ALL_IDs)
 
 def pullout():
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
