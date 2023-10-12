@@ -65,7 +65,7 @@ def pushin():
     time.sleep(26)
     print("Arm pushed in")
 
-GPIO.output(17, GPIO.HIGH)
+GPIO.output(16, GPIO.HIGH)
 arduinoinput = ''
 # TCP IP request from GCS.
 while True:
@@ -75,7 +75,7 @@ while True:
 
 # Take Battery from GCS
 pullout()
-GPIO.output(17, GPIO.LOW)
+GPIO.output(16, GPIO.LOW)
 time.sleep(8)
 # ser.write(b'g')  # Tell Arduino it's good to go
 
