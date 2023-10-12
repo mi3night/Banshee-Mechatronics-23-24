@@ -29,8 +29,8 @@ SERVER_PORT = 12345
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((SERVER_HOST, SERVER_PORT))
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(18, GPIO.OUT)
-GPIO.output(18, GPIO.LOW)
+GPIO.setup(16, GPIO.OUT)
+GPIO.output(16, GPIO.LOW)
 def pullout():
 #     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
 #     motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
@@ -74,7 +74,7 @@ while True:
 
 # Take Battery from GCS
 pullout()
-GPIO.output(18, GPIO.HIGH)
+GPIO.output(16, GPIO.HIGH)
 time.sleep(8)
 # ser.write(b'g')  # Tell Arduino it's good to go
 
