@@ -30,7 +30,7 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((SERVER_HOST, SERVER_PORT))
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.OUT)
-GPIO.output(18,LOW)
+GPIO.output(18, GPIO.LOW)
 def pullout():
 #     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
 #     motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
