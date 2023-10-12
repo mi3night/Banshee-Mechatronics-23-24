@@ -6,13 +6,14 @@ import time
 import serial
 import cv2
 import socket
+import RPi.GPIO as GPIO
 
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
 WRIST_ID = 4
 CLAW_ID = 0
-
+#GPIO 23 physical pin 16 arduino reset pin
 
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
 PORT_NUM = '/dev/ttyUSB0'  # for rpi
@@ -30,6 +31,9 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((SERVER_HOST, SERVER_PORT))
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(16, GPIO.OUT)
 
 def pullout():
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
@@ -61,7 +65,7 @@ def pushin():
     time.sleep(7)
     motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
 
-
+GPIO.output(17, GPIO.HIGH)
 arduinoinput = ''
 # TCP IP request from GCS.
 while True:
@@ -71,7 +75,8 @@ while True:
 
 # Take Battery from GCS
 pullout()
-
+GPIO.output(17, GPIO.LOW)
+time.sleep(8)
 ser.write(b'g')  # Tell Arduino it's good to go
 
 # Wait for arduino to send s, means it has arrived at BVM
