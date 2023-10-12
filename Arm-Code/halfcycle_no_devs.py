@@ -28,7 +28,7 @@ SERVER_HOST = '172.20.10.3'
 SERVER_PORT = 12345
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((SERVER_HOST, SERVER_PORT))
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 GPIO.setup(18, GPIO.OUT)
 GPIO.output(18, GPIO.LOW)
 def pullout():
