@@ -49,7 +49,7 @@ def pullout():
     motor.simMotorRun([137, 62, 285], [2, 3, 4])  # pull out more
     time.sleep(3)
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
-    time.sleep(3)
+    time.sleep(7)
 
 def pushin():
     time.sleep(7)
