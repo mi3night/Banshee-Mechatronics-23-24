@@ -74,10 +74,10 @@ to send the pod backwards. 92 -> 91 -> 90 -> .. you get the point
 const int power = 5;                      //vcc toggle pin decleration
 const int left_servos = 6;                //left esc pin decleration
 const int right_servos = 10;              //right esc pin decleration
-const int trigFront = 3;                  //ultrasonic sensor trig pin decleration
-const int echoFront = 4;                  //ultrasonic sensor echo pin decleration
-const int trigBack = 7;                   //ultrasonic sensor trigBack pin decleration
-const int echoBack = 8;                   //ultrasonic sensor echoBack pin decleration
+const int trigFront = 7;                  //ultrasonic sensor trig pin decleration
+const int echoFront = 8;                  //ultrasonic sensor echo pin decleration
+const int trigBack = 3;                   //ultrasonic sensor trigBack pin decleration
+const int echoBack = 4;                   //ultrasonic sensor echoBack pin decleration
 const int blue_led = 11;                  //blue led pin decleration
 const int green_led = 12;                 //green led pin decleration
 const int reset_pin = 13;
@@ -144,7 +144,7 @@ void setup() {
 void loop() {
   while(digitalRead(reset_pin) ==  LOW);
   senseWall();                            //Call senseWall function
-  Serial.println(direction);              //Print to consle which direction is going
+  //Serial.println(direction);              //Print to consle which direction is going
   if(direction == 1)                      //Check if direction is set as forward
   {
     digitalWrite(blue_led,HIGH);               //Turn on LED for forward movement state
@@ -163,7 +163,7 @@ void loop() {
     digitalWrite(blue_led,LOW);                //Turn off LED for no movement state
     digitalWrite(green_led,LOW);               //Turn on LED for reverse movement state
     gradientControl(midpoint);
-    Serial.println("Pod reset");          //Print to consle motors are reset
+    //Serial.println("Pod reset");          //Print to consle motors are reset
   }
 }
 
