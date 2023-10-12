@@ -8,6 +8,9 @@ import cv2
 import socket
 import RPi.GPIO as GPIO
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(16, GPIO.OUT)
+GPIO.output(16, GPIO.LOW)
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
@@ -32,8 +35,7 @@ client_socket.connect((SERVER_HOST, SERVER_PORT))
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(16, GPIO.OUT)
+
 
 def pullout():
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
@@ -65,7 +67,6 @@ def pushin():
     time.sleep(7)
     motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
 
-GPIO.output(16, GPIO.HIGH)
 arduinoinput = ''
 # TCP IP request from GCS.
 while True:
@@ -75,7 +76,7 @@ while True:
 
 # Take Battery from GCS
 pullout()
-GPIO.output(16, GPIO.LOW)
+GPIO.output(16, GPIO.HIGH)
 time.sleep(8)
 ser.write(b'g')  # Tell Arduino it's good to go
 
