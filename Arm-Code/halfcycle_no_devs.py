@@ -6,7 +6,7 @@ import time
 import serial
 import cv2
 import socket
-
+import RPi.GPIO as GPIO
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
@@ -28,7 +28,8 @@ SERVER_HOST = '172.20.10.3'
 SERVER_PORT = 12345
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((SERVER_HOST, SERVER_PORT))
-
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(16, GPIO.OUT)
 
 def pullout():
 #     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
@@ -64,7 +65,7 @@ def pushin():
     time.sleep(26)
     print("Arm pushed in")
 
-
+GPIO.output(17, GPIO.HIGH)
 arduinoinput = ''
 # TCP IP request from GCS.
 while True:
@@ -74,7 +75,8 @@ while True:
 
 # Take Battery from GCS
 pullout()
-
+GPIO.output(17, GPIO.LOW)
+time.sleep(8)
 # ser.write(b'g')  # Tell Arduino it's good to go
 
 # Wait for arduino to send s, means it has arrived at BVM
