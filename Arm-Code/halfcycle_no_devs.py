@@ -74,7 +74,7 @@ while True:
 
 # Take Battery from GCS
 pullout()
-GPIO.output(16, GPIO.HIGH)
+GPIO.output(18, GPIO.HIGH)
 time.sleep(8)
 # ser.write(b'g')  # Tell Arduino it's good to go
 
