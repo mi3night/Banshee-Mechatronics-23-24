@@ -49,7 +49,7 @@ def pullout():
     motor.simMotorRun([137, 62, 285], [2, 3, 4])  # pull out more
     time.sleep(3)
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
-
+    time.sleep(3)
 
 def pushin():
     time.sleep(7)
@@ -76,7 +76,6 @@ while True:
 
 # Take Battery from GCS
 pullout()
-time.sleep(5)
 GPIO.output(16, GPIO.HIGH)
 time.sleep(8)
 ser.write(b'g')  # Tell Arduino it's good to go
