@@ -76,6 +76,7 @@ while True:
 
 # Take Battery from GCS
 pullout()
+time.sleep(5)
 GPIO.output(16, GPIO.HIGH)
 time.sleep(8)
 ser.write(b'g')  # Tell Arduino it's good to go
@@ -91,3 +92,4 @@ while True:
 
 # Push battery into BVM
 pushin()
+GPIO.cleanup()
