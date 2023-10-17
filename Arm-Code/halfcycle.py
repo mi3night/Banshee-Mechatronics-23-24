@@ -29,7 +29,7 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 #SERVER_HOST = '192.168.1.26'
 SERVER_HOST = '172.20.10.3'
-#SERVER_HOST = '172.20.10.3'    #Jin's IP 
+SERVER_HOST = '172.20.10.4'    #Jin's IP 
 SERVER_PORT = 12345
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((SERVER_HOST, SERVER_PORT))
