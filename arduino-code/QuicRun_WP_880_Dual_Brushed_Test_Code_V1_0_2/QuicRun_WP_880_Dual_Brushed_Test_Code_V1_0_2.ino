@@ -74,10 +74,10 @@ to send the pod backwards. 92 -> 91 -> 90 -> .. you get the point
 const int power = 5;                      //vcc toggle pin decleration
 const int left_servos = 6;                //left esc pin decleration
 const int right_servos = 10;              //right esc pin decleration
-const int trigFront = 7;                  //ultrasonic sensor trig pin decleration
-const int echoFront = 8;                  //ultrasonic sensor echo pin decleration
-const int trigBack = 3;                   //ultrasonic sensor trigBack pin decleration
-const int echoBack = 4;                   //ultrasonic sensor echoBack pin decleration
+const int trigFront = 3;                  //ultrasonic sensor trig pin decleration
+const int echoFront = 4;                  //ultrasonic sensor echo pin decleration
+const int trigBack = 7;                   //ultrasonic sensor trigBack pin decleration
+const int echoBack = 8;                   //ultrasonic sensor echoBack pin decleration
 const int blue_led = 11;                  //blue led pin decleration
 const int green_led = 12;                 //green led pin decleration
 const int reset_pin = 13;
@@ -96,7 +96,7 @@ int midpoint = 90;
 int curr_speed = 90;
 int break_point = 85;
 int forward_speed = 98;
-int reverse_speed = 77;
+int reverse_speed = 76;
 bool is_reverse = false;
 
 String py_input;
@@ -109,7 +109,6 @@ void reverse(int speed);
 //Setup Function
 void setup() {
   //Serial communication startup
-  Serial.println("Begin Setup");
   Serial.begin(9600);                     //Set baudrate to 9600
 
   //Servo attachment
@@ -136,7 +135,6 @@ void setup() {
   delay(8000);                            //Delay for 5 seconds
   digitalWrite(blue_led,LOW);                  //Turn off LED for set up
   digitalWrite(green_led,LOW);               //Turn on LED for reverse movement state
-  Serial.println("Setup complete");       //Print to consle setup is complete
   direction = 0;                          //Set direction var to forward
 }
 
@@ -150,14 +148,12 @@ void loop() {
     digitalWrite(blue_led,HIGH);               //Turn on LED for forward movement state
     digitalWrite(green_led,LOW);               //Turn on LED for reverse movement state
     gradientControl(forward_speed);
-    Serial.println("Moving forward");     //Print to consle motors are moving forward
   }
   else if(direction == -1)                //Check if direction is set as backwards
   {
     digitalWrite(blue_led,LOW);               //Turn on LED for reverse movement state
     digitalWrite(green_led,HIGH);               //Turn on LED for reverse movement state
     reverse(reverse_speed);
-    Serial.println("Moving reverse");     //Print to consle motors are moving backwards
   }
   else{                                   //Check if direction not forward or backward
     digitalWrite(blue_led,LOW);                //Turn off LED for no movement state
@@ -172,7 +168,6 @@ void senseWall()
 {
   if(direction == 1)                      //Check if direction is set as forward
   {
-    Serial.println("Sense fwd Direction");
     digitalWrite (trigFront, HIGH);       //Turn on send trigger signal to front ultrasonic sensor
     delay(50);                            //Delay for 0.05 seconds to 50 ms
     digitalWrite(trigFront, LOW);         //Turn off send trigger signal to front ultrasonic sensor
@@ -185,14 +180,11 @@ void senseWall()
   }
   else if(direction == -1)                //Check if direction is set as reverse
   {
-    Serial.println("Sense bwd Direction");
     digitalWrite (trigBack, HIGH);        //Turn on send trigger signal to back ultrasonic sensor
     delay(50);                            //Delay for 0.05 seconds to 50 ms
     digitalWrite(trigBack, LOW);          //Turn off send trigger signal to back ultrasonic sensor
     duration = pulseIn(echoBack, HIGH);  //Set duration equal to the pulse reading from the echo of the back ultrasonic sensor
-    Serial.println(duration);
     distance = (duration/2)/29.1;         //Calculate the distance into cm
-    Serial.println(distance);
     if(distance < 15)                    //Check if the distance is less than or equal to 10 cm from the back
     {
       is_reverse = false;
@@ -225,11 +217,11 @@ void senseWall()
     //Original serial in
     if(py_input == 'g') //For GCS
     {
-      direction = -1;
+      direction = 1;
     }
     else if(py_input == 'b') //For BVM
     {
-      direction = 1;
+      direction = -1;
     }
     else{
       direction = 0;

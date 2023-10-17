@@ -85,7 +85,7 @@ ser.write(b'g')  # Tell Arduino it's good to go
 while True:
     response = ser.readline().strip()
     arduinoinput = response.decode()
-    print(arduinoinput)
+    print(arduinoinput + " flag ")
     if arduinoinput == 's':
         print("push battery into BVM!")
         break
