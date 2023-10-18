@@ -226,6 +226,7 @@ void senseWall()
     else{
       direction = 0;
       Serial.write('s');
+      delay(1000);
     }
   }
 }

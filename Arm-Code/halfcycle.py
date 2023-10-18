@@ -67,7 +67,6 @@ def pushin():
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])
     time.sleep(7)
     motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
-
 arduinoinput = ''
 # TCP IP request from GCS.
 while True:
@@ -85,8 +84,8 @@ ser.write(b'g')  # Tell Arduino it's good to go
 while True:
     response = ser.readline().strip()
     arduinoinput = response.decode()
-    print(arduinoinput + " flag ")
-    if arduinoinput == 's':
+    print(arduinoinput[0] + " flag ")
+    if arduinoinput[0] == 's':
         print("push battery into BVM!")
         break
 
