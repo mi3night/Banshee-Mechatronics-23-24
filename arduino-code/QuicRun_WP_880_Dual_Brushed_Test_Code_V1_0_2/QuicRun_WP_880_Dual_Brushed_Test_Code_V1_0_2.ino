@@ -74,10 +74,10 @@ to send the pod backwards. 92 -> 91 -> 90 -> .. you get the point
 const int power = 5;                      //vcc toggle pin decleration
 const int left_servos = 6;                //left esc pin decleration
 const int right_servos = 10;              //right esc pin decleration
-const int trigFront = 3;                  //ultrasonic sensor trig pin decleration
-const int echoFront = 4;                  //ultrasonic sensor echo pin decleration
-const int trigBack = 7;                   //ultrasonic sensor trigBack pin decleration
-const int echoBack = 8;                   //ultrasonic sensor echoBack pin decleration
+const int trigFront = 7;                  //ultrasonic sensor trig pin decleration
+const int echoFront = 8;                  //ultrasonic sensor echo pin decleration
+const int trigBack = 3;                   //ultrasonic sensor trigBack pin decleration
+const int echoBack = 4;                   //ultrasonic sensor echoBack pin decleration
 const int blue_led = 11;                  //blue led pin decleration
 const int green_led = 12;                 //green led pin decleration
 const int reset_pin = 13;
@@ -226,7 +226,6 @@ void senseWall()
     else{
       direction = 0;
       Serial.write('s');
-      delay(1000);
     }
   }
 }
