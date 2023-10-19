@@ -51,9 +51,6 @@ def pullout():
     time.sleep(3)
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
     time.sleep(7)
-    while (True):
-        if (motor.dxlGetVelo(ALL_IDs) == [0,0,0,0,0]):
-            break
 
 def pushin():
     time.sleep(7)
@@ -70,9 +67,7 @@ def pushin():
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])
     time.sleep(7)
     motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
-    while (True):
-        if (motor.dxlGetVelo(ALL_IDs) == [0,0,0,0,0]):
-            break
+
 arduinoinput = ''
 # TCP IP request from GCS.
 while True:
