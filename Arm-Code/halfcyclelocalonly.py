@@ -96,7 +96,7 @@ ser.write(b'g')  # Tell Arduino it's good to go
 while True:
     print("waiting for s")
     response = ser.readline().strip()
-    arduinoinput = response.decode('utf-8')
+    arduinoinput = response.decode()
     print(arduinoinput[0] + " flag ")
     if arduinoinput[0] == 's':
         print("push battery into BVM!")
