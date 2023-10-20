@@ -25,7 +25,8 @@ CLAW_ID = 0
 
 #SERVER_HOST = '107.77.227.224'
 #SERVER_HOST = '192.168.1.26'
-SERVER_HOST = '172.20.10.3'
+SERVER_HOST = '192.168.1.50'
+#SERVER_HOST = '172.20.10.3'
 SERVER_PORT = 12345
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((SERVER_HOST, SERVER_PORT))
