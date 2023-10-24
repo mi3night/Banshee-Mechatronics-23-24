@@ -97,6 +97,7 @@ while True:
     print("waiting for s")
     response = ser.readline().strip()
     arduinoinput = response.decode()
+    print(arduinoinput)
     if arduinoinput[0] == 's':
         print("push battery into BVM!")
         break
