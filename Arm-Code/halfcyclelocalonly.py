@@ -77,7 +77,7 @@ def pushin():
     # while (True):
     #     if (motor.dxlGetVelo(ALL_IDs) == [0,0,0,0,0]):
     #         break
-arduinoinput = ' '
+arduinoinput = '0'
 # TCP IP request from GCS.
 # while True:
 #     response = client_socket.recv(1024)
@@ -95,7 +95,7 @@ ser.write(b'g')  # Tell Arduino it's good to go
 # Wait for arduino to send s, means it has arrived at BVM
 while True:
     print("waiting for s")
-    response = ser.readline().strip()
+    response = ser.readline().strip().lower()
     arduinoinput = response.decode()
     print(arduinoinput)
     if arduinoinput[0] == 's':
