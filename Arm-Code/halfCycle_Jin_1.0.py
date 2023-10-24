@@ -1,7 +1,7 @@
 import math
 import motorctrl_v1 as motor
 import Movement_Calc_v2 as calculation
-#import numpy as np
+import numpy as np
 import time
 import serial
 import cv2
@@ -76,12 +76,6 @@ def pushin():
     print("push in end")
 
 arduinoinput = ''
-# TCP IP request from GCS.
-client_socket.send("Mech".encode('utf-8'))
-while True:
-    response = client_socket.recv(1024)
-    if response.decode() == 'Go':
-        break
 
 # Take Battery from GCS
 pullout()
