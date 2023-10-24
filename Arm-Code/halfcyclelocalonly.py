@@ -10,7 +10,7 @@ import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(16, GPIO.OUT)
-GPIO.output(16, GPIO.LOW)
+GPIO.output(16, GPIO.HIGH)
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
@@ -88,7 +88,7 @@ arduinoinput = ''
 pullout()
 print("Start Arduino Code")
 GPIO.output(16, GPIO.HIGH)
-time.sleep(8)
+#time.sleep(8)
 print("Send Arduino Go")
 ser.write(b'g')  # Tell Arduino it's good to go
 
