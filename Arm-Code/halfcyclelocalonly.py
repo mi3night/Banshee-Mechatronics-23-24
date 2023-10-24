@@ -77,7 +77,7 @@ def pushin():
     # while (True):
     #     if (motor.dxlGetVelo(ALL_IDs) == [0,0,0,0,0]):
     #         break
-arduinoinput = ''
+arduinoinput = ' '
 # TCP IP request from GCS.
 # while True:
 #     response = client_socket.recv(1024)
