@@ -95,8 +95,8 @@ ser.write(b'g')  # Tell Arduino it's good to go
 # Wait for arduino to send s, means it has arrived at BVM
 while True:
     print("waiting for s")
-    response = ser.readline().strip().lower()
-    arduinoinput = response.decode()
+    response = ser.readline().strip()
+    arduinoinput = response.decode().lower()
     print(arduinoinput)
     if arduinoinput[0] == 's':
         print("push battery into BVM!")
