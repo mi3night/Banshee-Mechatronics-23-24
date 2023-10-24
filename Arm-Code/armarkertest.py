@@ -30,6 +30,11 @@ ARUCO_DICT = {
     "DICT_APRILTAG_36h11": cv2.aruco.DICT_APRILTAG_36h11
 }
 
+
+frameX = 0
+objX = 1000
+frameY = 0
+objY = 1000
 def aruco_display(corners, ids, rejected, image):
     if len(corners) > 0:
         ids = ids.flatten()
@@ -105,7 +110,7 @@ aruco_type = "DICT_5X5_100"
 arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[aruco_type])
 arucoParams = cv2.aruco.DetectorParameters_create()
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
@@ -159,21 +164,25 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
 motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4]) #ALWAYS SET SPEED BEFORE ANYTHING
-motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4]) #set chamber
+motor.simMotorRun([30, 227, 301, 49, 143], [0,1,2,3,4]) 
+
+
 
 
 
 while (MOVEARM_MODE):
         while cap.isOpened():
+
+
+
             ret, img = cap.read()
+
             h, w, _ = img.shape
             width = 1000
             height = int(width*(h/w))
             img = cv2.resize(img, (width, height), interpolation=cv2.INTER_CUBIC)
 
-            #Frame's center pixel
             h,w,_ = img.shape
-            # frameX = int(w/2)
             fX=int(w/2)
             fY=int(h/2)
             cv2.circle(img, (fX,fY), 3, (255, 0, 0), -1)
@@ -184,27 +193,31 @@ while (MOVEARM_MODE):
             detected_markers = aruco_display(corners, ids, rejected, img)
 
             cv2.imshow("Image", detected_markers)
+
             
             
             
-            while (True):
-                difference = objX - frameX
-                print('x difference: ' + str(difference))
-                # TELL ARDUINO TO MOVE THE MOTORS LEFT OR RIGHT OR RIGHT
-                if (abs(objX - frameX) > 200):
-                    print("PULLING OUT BATTERY")
-                    break
+            # while (True):
+            #     cv2.imshow("Image", detected_markers)
+            #     difference = objX - frameX
+            #     print('x difference: ' + str(difference))
+            #     # TELL ARDUINO TO MOVE THE MOTORS LEFT OR RIGHT OR RIGHT
+            #     if (abs(objX - frameX) < 50):
+            #         print("PULLING OUT BATTERY")
+            #         break
             
-            pullout()
+            # pullout()
             
-            motor.simMotorRun([187], [2])  # back to pull down more so that the camera can see the AR Marker
+            # motor.simMotorRun([187], [2])  # back to pull down more so that the camera can see the AR Marker
             
-            time.sleep(4)
+            # time.sleep(4)
             
-            while (True):
-                difference = objX - frameX
-                print('x difference: ' + str(difference))
-                # TELL ARDUINO TO MOVE THE MOTORS LEFT OR RIGHT OR RIGHT
-                if (abs(objX - frameX) > 200):
-                    print("PUSHING IN THE BATTERY")
-                    break
+            # while (True):
+            #     difference = objX - frameX
+            #     print('x difference: ' + str(difference))
+            #     # TELL ARDUINO TO MOVE THE MOTORS LEFT OR RIGHT OR RIGHT
+            #     if (abs(objX - frameX) < 50):
+            #         print("PUSHING IN THE BATTERY")
+            #         break
+cv2.destroyAllWindows()
+cap.release()

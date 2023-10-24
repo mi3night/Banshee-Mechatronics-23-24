@@ -1,35 +1,16 @@
-import math
-import motorctrl_v1 as motor
-import Movement_Calc_v2 as calculation
 import numpy as np
 import time
 import cv2
+import math
+import motorctrl_v1 as motor
+import Movement_Calc_v2 as calculation
 
-
-BASE_ID = 1
-BICEP_ID = 2
-FOREARM_ID = 3
-WRIST_ID = 4
-CLAW_ID = 0
-
-PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'
-BAUDRATE = 1000000
-
-MOVEARM_MODE = 1
-
-ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
-
-frameX = 0
-objX = 0
-frameY = 0
-objY = 0
 
 ARUCO_DICT = {
     "DICT_4X4_50": cv2.aruco.DICT_4X4_50,
     "DICT_4X4_100": cv2.aruco.DICT_4X4_100,
     "DICT_4X4_250": cv2.aruco.DICT_4X4_250,
-    "DICT_4X4_1000": cv2.aruco.DICT_4X4_100,
+    "DICT_4X4_1000": cv2.aruco.DICT_4X4_1000,
     "DICT_5X5_50": cv2.aruco.DICT_5X5_50,
     "DICT_5X5_100": cv2.aruco.DICT_5X5_100,
     "DICT_5X5_250": cv2.aruco.DICT_5X5_250,
@@ -49,6 +30,12 @@ ARUCO_DICT = {
     "DICT_APRILTAG_36h11": cv2.aruco.DICT_APRILTAG_36h11
 }
 
+
+frameX = 0
+objX = 1000
+frameY = 0
+objY = 1000
+test = "out"
 def aruco_display(corners, ids, rejected, image):
     if len(corners) > 0:
         ids = ids.flatten()
@@ -106,7 +93,6 @@ def aruco_display(corners, ids, rejected, image):
             cv2.putText(image, outlineText2, (topLeft[0], topLeft[1] + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2)
     return image
 
-
 def calculate_distance(marker_size):
     # Constants for your specific camera setup
     # You need to calibrate these values for your camera
@@ -121,77 +107,72 @@ def calculate_distance(marker_size):
 
 
 
-
 aruco_type = "DICT_5X5_100"
 arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[aruco_type])
 arucoParams = cv2.aruco.DetectorParameters_create()
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
-# while cap.isOpened():
-#     ret, img = cap.read()
+def pullout():
+    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4]
+                     )  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
+    time.sleep(4)
+    motor.simMotorRun([31, 223, 90, 222, 190], [0, 1, 2, 3, 4])  # grab battery
+    time.sleep(2)
+    motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
+    motor.simMotorRun([129, 104, 285], [2, 3, 4])  # pull out
+    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])
+    motor.simMotorRun([137, 62, 285], [2, 3, 4])  # pull out more
+    time.sleep(3)
+    motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
 
-#     h, w, _ = img.shape
-#     width = 1000
-#     height = int(width*(h/w))
-#     img = cv2.resize(img, (width, height), interpolation=cv2.INTER_CUBIC)
 
-#     #Frame's center pixel
-#     h,w,_ = img.shape
-#     frameX = int(w/2)
-#     fX=int(w/2)
-#     fY=int(h/2)
-#     cv2.circle(img, (fX,fY), 3, (255, 0, 0), -1)
-#     cv2.putText(img," (" + str(fX) + " , " + str(fY) + ")", (fX,fY), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-    
-#     corners, ids, rejected = cv2.aruco.detectMarkers(img, arucoDict, parameters=arucoParams)
+def pushin():
+    time.sleep(7)
+    motor.simMotorRun([187], [2])  # back to pull down more
+    time.sleep(3)
+    motor.simMotorRun([150, 80], [2, 3])
+    time.sleep(3)
+    motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
+    motor.simMotorRun([25, 227, 130, 130, 250], [0, 1, 2, 3, 4])  # push in
+    motor.simMotorRun([25, 227, 90, 222, 194], [0, 1, 2, 3, 4])
+    time.sleep(3)
+    motor.simMotorRun([90, 227, 90, 222, 194], [0, 1, 2, 3, 4])
+    time.sleep(3)
+    motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])
+    time.sleep(7)
+    motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
 
-#     detected_markers = aruco_display(corners, ids, rejected, img)
 
-#     cv2.imshow("Image", detected_markers)
 
-#     key = cv2.waitKey(1) & 0xFF
-#     if key == ord("q"):
-#         break
+BASE_ID = 1
+BICEP_ID = 2
+FOREARM_ID = 3
+WRIST_ID = 4
+CLAW_ID = 0
 
-# cv2.destroyAllWindows()
-# cap.release()
+PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'
+
+BAUDRATE = 1000000
+
+MOVEARM_MODE = 1
+
+ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
+
 motor.portInitialization(PORT_NUM, ALL_IDs)
-motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4])
-motor.motorRunWithInputs([90, 227, 180, 177, 60], [0, 1, 2, 3, 4])
-# if __name__ == "__main__":
+motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4]) #ALWAYS SET SPEED BEFORE ANYTHING
+motor.simMotorRun([30, 227, 301, 49, 143], [0,1,2,3,4]) 
+
+
+
+
 while (MOVEARM_MODE):
         while cap.isOpened():
-#         x = int(input("Enter the goal X coordinate for the arm: "))
-#         y = int(input("Enter the goal Y coordinate for the arm: "))
-#         z = int(input("Enter the goal Z coordinate for the arm: "))
-#         print("""
-#         [0] CLAW PARALLEL TO GROUND
-#         [1] CLAW PERPENDICULAR TO GROUND
-#         [2] CLAW 45 DEGREE TO GROUND
-#         """)
-#         forearm_mode = int(input("Enter '0', '1', or '2' for forearm mode: "))
-
-#         claw_angle =  int(input("Enter the mode for the claw [0] to open and [1] to close: "))
-
-
-#         if (claw_angle == 0):
-#             motor.motorRunWithInputs([90], [0])
-#         else:
-#             motor.motorRunWithInputs([180], [0])
-
-#         coor = [x,y,z]
-#         angles = calculation.angle_Calc(coor, forearm_mode)
-#         print(angles)
         
-#         motor.dxlSetVelo([30,18,30,30,30], ALL_IDs)
-#         motor.simMotorRun(angles, MOVE_IDs)
-
-
-#         # motor.motorRunWithInputs([180], [0])
-#         # motor.motorRunWithInputs([225], [0])
 
 
             ret, img = cap.read()
@@ -201,9 +182,7 @@ while (MOVEARM_MODE):
             height = int(width*(h/w))
             img = cv2.resize(img, (width, height), interpolation=cv2.INTER_CUBIC)
 
-            #Frame's center pixel
             h,w,_ = img.shape
-            # frameX = int(w/2)
             fX=int(w/2)
             fY=int(h/2)
             cv2.circle(img, (fX,fY), 3, (255, 0, 0), -1)
@@ -214,48 +193,60 @@ while (MOVEARM_MODE):
             detected_markers = aruco_display(corners, ids, rejected, img)
 
             cv2.imshow("Image", detected_markers)
+            
+            
+            
+            if (abs(objX - frameX) < 50 ) and (test == "out"):
+                pullout()
+                print("out")
+                test = "in"
+            
+            motor.simMotorRun([187], [2])  # back to pull down more so that the camera can see the AR Marker
+            
+            time.sleep(4)
+            
+            if (abs(objX - frameX) < 50 ) and (test == "in"):
+                pushin()
+                print("out")
+                test = "out"
 
 
-            # mode = input("Enter 'Y' to continue arm movement. Else, press any key: ")
-            # if (mode != 'Y'):
-            #     MOVEARM_MODE = 0
-            #     motor.portTermination()
-            if(abs(objX - frameX) > 30 or abs(objY - frameY) > 30):
-                 difference = objX - frameX
-                 differenceZ = objY - frameY
-                 print('x difference: ' + str(difference))
-                 print('y difference: ' + str(differenceZ))
-                 current0 = motor._map(motor.ReadMotorData(0, 132), 0, 4095, 0, 360)
-                 current = motor._map(motor.ReadMotorData(1, 132), 0, 4095, 0, 360)
-                 current2 = motor._map(motor.ReadMotorData(2, 132), 0, 4095, 0, 360)
-                 current3 = motor._map(motor.ReadMotorData(3, 132), 0, 4095, 0, 360)
-                 current4 = motor._map(motor.ReadMotorData(4, 132), 0, 4095, 0, 360)
-                 if (current0 == 180):
-                     print("current ID0: " + str(current0) + " (Closed)")
-                 else:
-                     print("current ID0: " + str(current0) + " (Opened)") 
-                 print("current ID1: " + str(current))
-                 print("current ID2: " + str(current2))
-                 print("current ID3: " + str(current3))
-                 print("current ID4: " + str(current4))
-                 if (abs(differenceZ) > 60 and ids is not None):
-                    motor.motorRunWithInputs([(current2 - (differenceZ/60)), (current3 - (differenceZ/60)), (current4 - (differenceZ/60))], [2, 3, 4])
-                 elif (difference < 10 and ids is not None):
-                    # motor.WriteMotorData(1, 116, current - 10)
-                    # motor.motor_check(1,motor._map(current - 10 , 0, 360, 0, 4095))
-                    motor.dxlSetVelo([37],[1])
-                    motor.motorRunWithInputs([current - difference/20], [1])
-                 elif (difference > 10 and ids is not None):
-                    motor.dxlSetVelo([37],[1])
-                    motor.motorRunWithInputs([current - difference/20], [1])
-                # Make sure it loops this part only once? Then, make sure it can reach for the object, using the y poition
-                # Variable: distance_feet_rounded 
-                # - Gives the distance from the AR Marker, to the camera
-                #  - Double measure the AR Marker, because there may be some errors, especially since we modified it a lot
-                # motor.motorRunWithInputs([(current2 - (7.6/40)), (current3 + (22/40)), (current4 - (7.6/40))], [2, 3, 4])
-                # - Makes the arm extend by 1 pixel (Hopefully)
-                # motor.motorRunWithInputs([(current2 + (7.6/40)), (current3 - (22/40)), (current4 + (7.6/40))], [2, 3, 4])  
-                # - Retracts the arm by 1 pixel (Hopefully)           
+            # if(abs(objX - frameX) > 30 or abs(objY - frameY) > 30):
+            #      difference = objX - frameX
+            #      differenceZ = objY - frameY
+            #      print('x difference: ' + str(difference))
+            #      print('y difference: ' + str(differenceZ))
+            #      current0 = motor._map(motor.ReadMotorData(0, 132), 0, 4095, 0, 360)
+            #      current = motor._map(motor.ReadMotorData(1, 132), 0, 4095, 0, 360)
+            #      current2 = motor._map(motor.ReadMotorData(2, 132), 0, 4095, 0, 360)
+            #      current3 = motor._map(motor.ReadMotorData(3, 132), 0, 4095, 0, 360)
+            #      current4 = motor._map(motor.ReadMotorData(4, 132), 0, 4095, 0, 360)
+            #      if (current0 == 180):
+            #          print("current ID0: " + str(current0) + " (Closed)")
+            #      else:
+            #          print("current ID0: " + str(current0) + " (Opened)") 
+            #      print("current ID1: " + str(current))
+            #      print("current ID2: " + str(current2))
+            #      print("current ID3: " + str(current3))
+            #      print("current ID4: " + str(current4))
+            #      if (abs(differenceZ) > 60 and ids is not None):
+            #         motor.motorRunWithInputs([(current2 - (differenceZ/60)), (current3 - (differenceZ/60)), (current4 - (differenceZ/60))], [2, 3, 4])
+            #      elif (difference < 10 and ids is not None):
+            #         # motor.WriteMotorData(1, 116, current - 10)
+            #         # motor.motor_check(1,motor._map(current - 10 , 0, 360, 0, 4095))
+            #         motor.dxlSetVelo([37],[1])
+            #         motor.motorRunWithInputs([current - difference/20], [1])
+            #      elif (difference > 10 and ids is not None):
+            #         motor.dxlSetVelo([37],[1])
+            #         motor.motorRunWithInputs([current - difference/20], [1])
+            #     # Make sure it loops this part only once? Then, make sure it can reach for the object, using the y poition
+            #     # Variable: distance_feet_rounded 
+            #     # - Gives the distance from the AR Marker, to the camera
+            #     #  - Double measure the AR Marker, because there may be some errors, especially since we modified it a lot
+            #     # motor.motorRunWithInputs([(current2 - (7.6/40)), (current3 + (22/40)), (current4 - (7.6/40))], [2, 3, 4])
+            #     # - Makes the arm extend by 1 pixel (Hopefully)
+            #     # motor.motorRunWithInputs([(current2 + (7.6/40)), (current3 - (22/40)), (current4 + (7.6/40))], [2, 3, 4])  
+            #     # - Retracts the arm by 1 pixel (Hopefully)           
             key = cv2.waitKey(1) & 0xFF
             if key == ord("q"):
                 break
@@ -263,5 +254,3 @@ while (MOVEARM_MODE):
 
 cv2.destroyAllWindows()
 cap.release()
-
-#     #this is the new update for the new github 
