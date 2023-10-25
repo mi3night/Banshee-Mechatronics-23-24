@@ -35,6 +35,7 @@ frameX = 0
 objX = 1000
 frameY = 0
 objY = 1000
+test = "out"
 def aruco_display(corners, ids, rejected, image):
     if len(corners) > 0:
         ids = ids.flatten()
@@ -110,7 +111,7 @@ aruco_type = "DICT_5X5_100"
 arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[aruco_type])
 arucoParams = cv2.aruco.DetectorParameters_create()
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
@@ -169,55 +170,40 @@ motor.simMotorRun([30, 227, 301, 49, 143], [0,1,2,3,4])
 
 
 
-
 while (MOVEARM_MODE):
         while cap.isOpened():
-
-
-
             ret, img = cap.read()
-
             h, w, _ = img.shape
             width = 1000
             height = int(width*(h/w))
             img = cv2.resize(img, (width, height), interpolation=cv2.INTER_CUBIC)
-
             h,w,_ = img.shape
             fX=int(w/2)
             fY=int(h/2)
             cv2.circle(img, (fX,fY), 3, (255, 0, 0), -1)
             cv2.putText(img," (" + str(fX) + " , " + str(fY) + ")", (fX,fY), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-            
             corners, ids, rejected = cv2.aruco.detectMarkers(img, arucoDict, parameters=arucoParams)
-
             detected_markers = aruco_display(corners, ids, rejected, img)
-
+            
             cv2.imshow("Image", detected_markers)
+            
+            
+            if (abs(objX - frameX) < 50 ) and (test == "out"):
+                pullout()
+                print("out")
+                test = "in"
+                time.sleep(4)
+                motor.simMotorRun([187], [2])  # back to pull down more so that the camera can see the AR Marker
+            
+            
+            if (abs(objX - frameX) < 50 ) and (test == "in"):
+                pushin()
+                print("out")
+                test = "out"     
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord("q"):
+                break
+        break
 
-            
-            
-            
-            # while (True):
-            #     cv2.imshow("Image", detected_markers)
-            #     difference = objX - frameX
-            #     print('x difference: ' + str(difference))
-            #     # TELL ARDUINO TO MOVE THE MOTORS LEFT OR RIGHT OR RIGHT
-            #     if (abs(objX - frameX) < 50):
-            #         print("PULLING OUT BATTERY")
-            #         break
-            
-            # pullout()
-            
-            # motor.simMotorRun([187], [2])  # back to pull down more so that the camera can see the AR Marker
-            
-            # time.sleep(4)
-            
-            # while (True):
-            #     difference = objX - frameX
-            #     print('x difference: ' + str(difference))
-            #     # TELL ARDUINO TO MOVE THE MOTORS LEFT OR RIGHT OR RIGHT
-            #     if (abs(objX - frameX) < 50):
-            #         print("PUSHING IN THE BATTERY")
-            #         break
 cv2.destroyAllWindows()
 cap.release()
