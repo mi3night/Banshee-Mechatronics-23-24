@@ -110,7 +110,6 @@ while True:
         print("push battery into GCS!")
         break
 
-
 # Push battery into GCS
 
 pushin()
