@@ -46,7 +46,7 @@ def pullout():
     time.sleep(3)
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
     time.sleep(7)
-    print("pull out start")
+    print("pull out end")
 
 
 def pushin():
@@ -96,8 +96,8 @@ time.sleep(5)  # let BVM cycle battery
 
 # Take battery out of BVM
 pullout()
-print("sending g to arduino")
-ser.write(b'g')  # Tell Arduino it's good to go
+print("sending b to arduino")
+ser.write(b'b')  # Tell Arduino it's good to go
 
 # Wait for arduino to send s, means it has arrived at GCS
 while True:
