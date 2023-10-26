@@ -8,6 +8,10 @@ import cv2
 import socket
 import RPi.GPIO as GPIO
 
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(16, GPIO.OUT)
+GPIO.output(16, GPIO.LOW)
+
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
@@ -24,11 +28,7 @@ MOVEARM_MODE = 1
 ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
-
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(16, GPIO.OUT)
-GPIO.output(16, GPIO.LOW)
-
+motor.portInitialization(PORT_NUM, ALL_IDs)
 
 
 def pullout():
