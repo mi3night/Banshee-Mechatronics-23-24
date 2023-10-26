@@ -82,7 +82,7 @@ to send the pod backwards. 92 -> 91 -> 90 -> .. you get the point
 "Forward" and "Backward" is arbitarty for now
 */
 //Libraries
-#include <BTP.h> 
+#include "BTP.h" 
 
 //Setup Function
 void setup() {
@@ -113,7 +113,7 @@ void setup() {
   delay(5000);                                  //Delay for 5 seconds
   digitalWrite(blue_led,LOW);                   //Turn off LED for set up
   digitalWrite(green_led,LOW);                  //Turn on LED for reverse movement state
-  direction = 'B';                              //Set direction var to forward (BVM)
+  direction = 'S';                              //Set direction var to forward (BVM)
   //default_mode(distanceBack);                   //Reset Pod to the start point (GCS)
 }
 

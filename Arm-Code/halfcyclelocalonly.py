@@ -39,6 +39,7 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 
 
 def pullout():
+    print("pull out start")
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
     time.sleep(4)
@@ -51,11 +52,13 @@ def pullout():
     time.sleep(3)
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
     time.sleep(7)
-    while (True):
-        if (motor.dxlGetVelo(ALL_IDs) == [0,0,0,0,0]):
-            break
+    print("pull out start")
+    # while (True):
+    #     if (motor.dxlGetVelo(ALL_IDs) == [0,0,0,0,0]):
+    #         break
 
 def pushin():
+    print("push in start")
     time.sleep(7)
     motor.simMotorRun([187], [2])  # back to pull down more
     time.sleep(3)
@@ -70,10 +73,11 @@ def pushin():
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])
     time.sleep(7)
     motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
-    while (True):
-        if (motor.dxlGetVelo(ALL_IDs) == [0,0,0,0,0]):
-            break
-arduinoinput = ''
+    print("push in end")
+    # while (True):
+    #     if (motor.dxlGetVelo(ALL_IDs) == [0,0,0,0,0]):
+    #         break
+arduinoinput = '0'
 # TCP IP request from GCS.
 # while True:
 #     response = client_socket.recv(1024)
@@ -82,15 +86,18 @@ arduinoinput = ''
 
 # Take Battery from GCS
 pullout()
+print("Start Arduino Code")
 GPIO.output(16, GPIO.HIGH)
 time.sleep(8)
+print("Send Arduino Go")
 ser.write(b'g')  # Tell Arduino it's good to go
 
 # Wait for arduino to send s, means it has arrived at BVM
 while True:
+    print("waiting for s")
     response = ser.readline().strip()
-    arduinoinput = response.decode()
-    print(arduinoinput[0] + " flag ")
+    arduinoinput = response.decode().lower()
+    print(arduinoinput)
     if arduinoinput[0] == 's':
         print("push battery into BVM!")
         break

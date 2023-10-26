@@ -192,23 +192,6 @@ void senseWall()
     }
   }
   else{                                   //Check if direction is set as forward
-    //Test without serial in
-    // digitalWrite (trigBack, HIGH);        //Turn on send trigger signal to back ultrasonic sensor
-    // delay(50);                            //Delay for 0.05 seconds to 50 ms
-    // digitalWrite(trigBack, LOW);          //Turn off send trigger signal to back ultrasonic sensor
-    // durationBack = pulseIn(echoBack, HIGH);  //Set duration equal to the pulse reading from the echo of the back ultrasonic sensor
-    // Serial.println(duration);
-    // distanceBack = (durationBack/2)/29.1;         //Calculate the distance into cm
-    // Serial.println(distance);
-    // if(distanceBack < 15)                    //Check if the distance is less than or equal to 10 cm from the back
-    // {
-    //   direction = 0;                      //Set direction to none to trigger a stop
-    // }
-    // else{
-    //   delay(5000);
-    //   direction = -1;
-    // }
-
     //Shawn Serial input
     while(Serial.available())
     {
@@ -226,7 +209,6 @@ void senseWall()
     else{
       direction = 0;
       Serial.write('s');
-      delay(1000);
     }
   }
 }

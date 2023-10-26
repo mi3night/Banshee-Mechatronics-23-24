@@ -27,8 +27,9 @@ MOVEARM_MODE = 1
 ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
+SERVER_HOST = '192.168.1.95'
 #SERVER_HOST = '192.168.1.26'
-SERVER_HOST = '172.20.10.5'
+#SERVER_HOST = '172.20.10.3'    #Alex IP
 #SERVER_HOST = '172.20.10.4'    #Jin's IP 
 SERVER_PORT = 12345
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -51,9 +52,6 @@ def pullout():
     time.sleep(3)
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
     time.sleep(7)
-    while (True):
-        if (motor.dxlGetVelo(ALL_IDs) == [0,0,0,0,0]):
-            break
 
 def pushin():
     time.sleep(7)
@@ -70,9 +68,7 @@ def pushin():
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])
     time.sleep(7)
     motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
-    while (True):
-        if (motor.dxlGetVelo(ALL_IDs) == [0,0,0,0,0]):
-            break
+
 arduinoinput = ''
 # TCP IP request from GCS.
 while True:
