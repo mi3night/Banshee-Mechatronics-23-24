@@ -32,6 +32,7 @@ GPIO.output(16, GPIO.LOW)
 
 
 def pullout():
+    print("pull out start")
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4]
                      )  # ALWAYS SET SPEED BEFORE ANYTHING
     motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
@@ -45,9 +46,11 @@ def pullout():
     time.sleep(3)
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
     time.sleep(7)
+    print("pull out start")
 
 
 def pushin():
+    print("push in start")
     time.sleep(7)
     motor.simMotorRun([187], [2])  # back to pull down more
     time.sleep(3)
@@ -63,21 +66,24 @@ def pushin():
     time.sleep(7)
     motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
     time.sleep(7)
+    print("push in end")
 
 
 arduinoinput = ''
 
 # Take Battery from GCS
 pullout()
+print("Start Arduino Code")
 GPIO.output(16, GPIO.HIGH)
 time.sleep(8)
 ser.write(b'g')  # Tell Arduino it's good to go
 
 # Wait for arduino to send s, means it has arrived at BVM
 while True:
+    print("waiting for s")
     response = ser.readline().strip()
     arduinoinput = response.decode()
-    if arduinoinput == 's':
+    if arduinoinput[0] == 's':
         print("push battery into BVM!")
         break
 
@@ -96,7 +102,7 @@ ser.write(b'g')  # Tell Arduino it's good to go
 while True:
     response = ser.readline().strip()
     arduinoinput = response.decode()
-    if arduinoinput == 's':
+    if arduinoinput[0] == 's':
         print("push battery into GCS!")
         break
 
@@ -104,3 +110,4 @@ while True:
 # Push battery into GCS
 
 pushin()
+GPIO.cleanup()

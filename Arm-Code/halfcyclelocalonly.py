@@ -88,7 +88,7 @@ arduinoinput = '0'
 pullout()
 print("Start Arduino Code")
 GPIO.output(16, GPIO.HIGH)
-#time.sleep(8)
+time.sleep(8)
 print("Send Arduino Go")
 ser.write(b'g')  # Tell Arduino it's good to go
 
