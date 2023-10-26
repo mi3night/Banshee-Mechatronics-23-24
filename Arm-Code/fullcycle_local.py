@@ -9,8 +9,8 @@ import socket
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(16, GPIO.OUT)
-GPIO.output(16, GPIO.LOW)
+GPIO.setup(18, GPIO.OUT)
+GPIO.output(18, GPIO.LOW)
 
 BASE_ID = 1
 BICEP_ID = 2
@@ -74,7 +74,7 @@ arduinoinput = ''
 # Take Battery from GCS
 pullout()
 print("Start Arduino Code")
-GPIO.output(16, GPIO.HIGH)
+GPIO.output(18, GPIO.HIGH)
 time.sleep(8)
 ser.write(b'g')  # Tell Arduino it's good to go
 
