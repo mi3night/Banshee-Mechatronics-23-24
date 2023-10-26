@@ -111,7 +111,7 @@ aruco_type = "DICT_5X5_100"
 arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[aruco_type])
 arucoParams = cv2.aruco.DetectorParameters_create()
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
@@ -131,7 +131,8 @@ def pullout():
 
 
 def pushin():
-    time.sleep(7)
+    motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])
+    time.sleep(4)
     motor.simMotorRun([187], [2])  # back to pull down more
     time.sleep(3)
     motor.simMotorRun([150, 80], [2, 3])
@@ -165,7 +166,7 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
 motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4]) #ALWAYS SET SPEED BEFORE ANYTHING
-motor.simMotorRun([30, 227, 301, 49, 143], [0,1,2,3,4]) 
+motor.simMotorRun([90, 227, 280, 49, 143], [0, 1, 2, 3, 4])
 
 
 
@@ -187,19 +188,21 @@ while (MOVEARM_MODE):
             
             cv2.imshow("Image", detected_markers)
             
-            
+            print(abs(objX - frameX))
             if (abs(objX - frameX) < 50 ) and (test == "out"):
                 pullout()
                 print("out")
                 test = "in"
-                time.sleep(4)
-                motor.simMotorRun([187], [2])  # back to pull down more so that the camera can see the AR Marker
+                time.sleep(8)
+                motor.simMotorRun([90, 227, 280, 49, 143], [0, 1, 2, 3, 4]) # back to pull down more so that the camera can see the AR Marker
+                objX = 51
             
             
             if (abs(objX - frameX) < 50 ) and (test == "in"):
                 pushin()
                 print("out")
-                test = "out"     
+                test = "out"
+                objX = 51     
             key = cv2.waitKey(1) & 0xFF
             if key == ord("q"):
                 break
