@@ -9,14 +9,15 @@ import socket
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(16, GPIO.OUT)
-GPIO.output(16, GPIO.HIGH)
+GPIO.setup(18, GPIO.OUT)
+GPIO.output(18, GPIO.LOW)
+
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
 WRIST_ID = 4
 CLAW_ID = 0
-#GPIO 23 physical pin 16 arduino reset pin
+
 
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
 PORT_NUM = '/dev/ttyUSB0'  # for rpi
@@ -27,20 +28,13 @@ MOVEARM_MODE = 1
 ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
-#SERVER_HOST = '192.168.1.26'
-# SERVER_HOST = '172.20.10.5'
-#SERVER_HOST = '172.20.10.4'    #Jin's IP 
-# SERVER_PORT = 12345
-# client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# client_socket.connect((SERVER_HOST, SERVER_PORT))
-
 motor.portInitialization(PORT_NUM, ALL_IDs)
-
 
 
 def pullout():
     print("pull out start")
-    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4]
+                     )  # ALWAYS SET SPEED BEFORE ANYTHING
     motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
     time.sleep(4)
     motor.simMotorRun([31, 223, 90, 222, 190], [0, 1, 2, 3, 4])  # grab battery
@@ -52,10 +46,8 @@ def pullout():
     time.sleep(3)
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
     time.sleep(7)
-    print("pull out start")
-    # while (True):
-    #     if (motor.dxlGetVelo(ALL_IDs) == [0,0,0,0,0]):
-    #         break
+    print("pull out end")
+
 
 def pushin():
     print("push in start")
@@ -73,22 +65,50 @@ def pushin():
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])
     time.sleep(7)
     motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
+    time.sleep(7)
     print("push in end")
+
 
 arduinoinput = ''
 
 # Take Battery from GCS
 pullout()
-GPIO.output(16, GPIO.HIGH)
+print("Start Arduino Code")
+GPIO.output(18, GPIO.HIGH)
 time.sleep(8)
 ser.write(b'g')  # Tell Arduino it's good to go
 
 # Wait for arduino to send s, means it has arrived at BVM
-while True:
-    arduinoinput = ser.readline()
-    if arduinoinput == 's':
-        pushin()
-        time.sleep(5)  # let BVM cycle battery
-        pullout()
-    
+print("waiting for s")
+arduinoinput = ser.readline()
+if arduinoinput == '1':
+    # Push battery into BVM
+    time.sleep(3)
+    print("push battery into BVM!")
+    pushin()
 
+# Push battery into BVM
+time.sleep(3)
+pushin()
+
+time.sleep(5)  # let BVM cycle battery
+
+# Take battery out of BVM
+pullout()
+print("sending b to arduino")
+ser.write(b'b')  # Tell Arduino it's good to go
+
+# Wait for arduino to send s, means it has arrived at GCS
+
+print("waiting for s")
+arduinoinput = ser.readline()
+if arduinoinput == '1':
+    # Push battery into BVM
+    time.sleep(3)
+    print("push battery into GSC!")
+    pushin()
+
+# Push battery into GCS
+
+pushin()
+GPIO.cleanup()
