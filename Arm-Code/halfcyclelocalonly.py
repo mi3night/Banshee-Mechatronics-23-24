@@ -10,7 +10,7 @@ import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(16, GPIO.OUT)
-GPIO.output(16, GPIO.HIGH)
+GPIO.output(16, GPIO.LOW)
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
