@@ -81,9 +81,8 @@ ser.write(b'g')  # Tell Arduino it's good to go
 # Wait for arduino to send s, means it has arrived at BVM
 while True:
     print("waiting for s")
-    while len(arduinoinput) == 0:
-        response = ser.readline().strip()
-        arduinoinput = response.decode()
+    response = ser.readline().strip()
+    arduinoinput = response.decode()
     if arduinoinput[0] == 's':
         print("push battery into BVM!")
         break
@@ -102,9 +101,8 @@ ser.write(b'b')  # Tell Arduino it's good to go
 
 # Wait for arduino to send s, means it has arrived at GCS
 while True:
-    while len(arduinoinput) == 0:
-        response = ser.readline().strip()
-        arduinoinput = response.decode()
+    response = ser.readline().strip()
+    arduinoinput = response.decode()
     if arduinoinput[0] == 's':
         print("push battery into GCS!")
         break
