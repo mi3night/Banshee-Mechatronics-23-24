@@ -66,12 +66,6 @@ def pushin():
 
 
 arduinoinput = ''
-# TCP IP request from GCS.
-client_socket.send("Mech".encode('utf-8'))
-while True:
-    response = client_socket.recv(1024)
-    if response.decode() == 'Go':
-        break
 
 # Take Battery from GCS
 pullout()
