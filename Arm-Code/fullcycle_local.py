@@ -3,7 +3,9 @@ import motorctrl_v1 as motor
 import Movement_Calc_v2 as calculation
 import numpy as np
 import time
+import serial
 import cv2
+import socket
 import RPi.GPIO as GPIO
 
 BASE_ID = 1
