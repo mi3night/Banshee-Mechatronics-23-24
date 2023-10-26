@@ -10,7 +10,9 @@ import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(16, GPIO.OUT)
+
 GPIO.output(16, GPIO.LOW)
+
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
@@ -19,7 +21,7 @@ CLAW_ID = 0
 #GPIO 23 physical pin 16 arduino reset pin
 
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
-PORT_NUM = '/dev/ttyUSB0'  # for rpi
+PORT_NUM = '/dev/ttyUSB0'  # for rpi connection to arm
 ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)  # for rpi
 
 BAUDRATE = 1000000
