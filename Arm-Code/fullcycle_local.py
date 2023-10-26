@@ -9,8 +9,8 @@ import socket
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(16, GPIO.OUT)
-GPIO.output(16, GPIO.LOW)
+GPIO.setup(18, GPIO.OUT)
+GPIO.output(18, GPIO.LOW)
 
 BASE_ID = 1
 BICEP_ID = 2
@@ -46,7 +46,7 @@ def pullout():
     time.sleep(3)
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
     time.sleep(7)
-    print("pull out start")
+    print("pull out end")
 
 
 def pushin():
@@ -74,7 +74,7 @@ arduinoinput = ''
 # Take Battery from GCS
 pullout()
 print("Start Arduino Code")
-GPIO.output(16, GPIO.HIGH)
+GPIO.output(18, GPIO.HIGH)
 time.sleep(8)
 ser.write(b'g')  # Tell Arduino it's good to go
 
@@ -82,6 +82,7 @@ ser.write(b'g')  # Tell Arduino it's good to go
 while True:
     print("waiting for s")
     response = ser.readline().strip()
+    print(arduinoinput)
     arduinoinput = response.decode()
     if arduinoinput[0] == 's':
         print("push battery into BVM!")
@@ -89,14 +90,15 @@ while True:
 
 
 # Push battery into BVM
+time.sleep(3)
 pushin()
 
 time.sleep(5)  # let BVM cycle battery
 
 # Take battery out of BVM
 pullout()
-
-ser.write(b'g')  # Tell Arduino it's good to go
+print("sending b to arduino")
+ser.write(b'b')  # Tell Arduino it's good to go
 
 # Wait for arduino to send s, means it has arrived at GCS
 while True:
