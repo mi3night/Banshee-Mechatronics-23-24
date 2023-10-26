@@ -89,13 +89,14 @@ while True:
 
 
 # Push battery into BVM
+time.sleep(3)
 pushin()
 
 time.sleep(5)  # let BVM cycle battery
 
 # Take battery out of BVM
 pullout()
-
+print("sending g to arduino")
 ser.write(b'g')  # Tell Arduino it's good to go
 
 # Wait for arduino to send s, means it has arrived at GCS
