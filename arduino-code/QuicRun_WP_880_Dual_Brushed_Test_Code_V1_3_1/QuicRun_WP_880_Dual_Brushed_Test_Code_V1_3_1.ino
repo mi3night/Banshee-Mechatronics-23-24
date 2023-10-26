@@ -128,8 +128,8 @@ void loop() {
     digitalWrite(blue_led,HIGH);                //Turn on LED for forward movement state
     digitalWrite(green_led,LOW);                //Turn on LED for reverse movement state
     gradientControl(forward_speed);
-    Serial.println("getdistance");
-    Serial.println(distanceBack);
+    // Serial.println("getdistance");
+    // Serial.println(distanceBack);
     if(distanceBack < 10)                       //Check if the distance is less than or equal to 10 cm  from the front
     {
       direction = 'S';                          //Set direction to none to trigger a stop
@@ -140,7 +140,7 @@ void loop() {
     digitalWrite(blue_led,LOW);                 //Turn on LED for reverse movement state
     digitalWrite(green_led,HIGH);               //Turn on LED for reverse movement state
     reverse(reverse_speed);
-    Serial.println(distance);
+    // Serial.println(distance);
     if(distance < 20)                           //Check if the distance is less than or equal to 10 cm from the back
     {
       is_reverse = false;
@@ -151,7 +151,7 @@ void loop() {
     digitalWrite(blue_led,LOW);                 //Turn off LED for no movement state
     digitalWrite(green_led,LOW);                //Turn on LED for reverse movement state
     gradientControl(midpoint);
-    Serial.println("Stop");
+    Serial.println("stop");
     delay(5000);
 
     if(distance < 20)                    //Check if the distance is less than or equal to 10 cm from the back
