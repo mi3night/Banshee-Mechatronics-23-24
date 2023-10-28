@@ -116,38 +116,43 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 def pullout():
+    print("pull out start")
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4]
                      )  # ALWAYS SET SPEED BEFORE ANYTHING
-    motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
+    motor.simMotorRun([110, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
     time.sleep(4)
     motor.simMotorRun([31, 223, 90, 222, 190], [0, 1, 2, 3, 4])  # grab battery
     time.sleep(2)
     motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
     motor.simMotorRun([129, 104, 285], [2, 3, 4])  # pull out
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])
-    motor.simMotorRun([137, 62, 285], [2, 3, 4])  # pull out more
+    motor.simMotorRun([150, 62, 285], [2, 3, 4])  # pull out more
     time.sleep(3)
-    motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
+    motor.simMotorRun([30, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
+    time.sleep(7)
+    print("pull out end")
 
 
 def pushin():
-    motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])
-    time.sleep(4)
+    print("push in start")
+    
+    motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4]) 
+    time.sleep(3)
     motor.simMotorRun([187], [2])  # back to pull down more
     time.sleep(3)
-    motor.simMotorRun([187, 80], [2, 3])
+    motor.simMotorRun([150, 80], [2, 3])
     time.sleep(3)
     motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
-    motor.simMotorRun([25, 227, 130, 130, 250], [0, 1, 2, 3, 4])  # push in
-    time.sleep(4)
-    motor.simMotorRun([25, 227, 90, 222, 194], [0, 1, 2, 3, 4])
+    motor.simMotorRun([25, 223, 130, 130, 250], [0, 1, 2, 3, 4])  # push in
+    motor.simMotorRun([25, 223, 90, 222, 194], [0, 1, 2, 3, 4])
     time.sleep(3)
-    motor.simMotorRun([100, 227, 90, 222, 194], [0, 1, 2, 3, 4])
+    motor.simMotorRun([110, 223, 90, 222, 194], [0, 1, 2, 3, 4])
     time.sleep(3)
-    motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])
+    motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])
     time.sleep(7)
-    motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
-
+    motor.simMotorRun([110, 223, 301, 49, 143], [0, 1, 2, 3, 4])
+    time.sleep(7)
+    print("push in end")
 
 
 BASE_ID = 1
@@ -167,7 +172,8 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
 motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4]) #ALWAYS SET SPEED BEFORE ANYTHING
-motor.simMotorRun([90, 227, 280, 49, 143], [0, 1, 2, 3, 4])
+motor.simMotorRun([110, 223, 301, 49, 143], [0, 1, 2, 3, 4])
+
 
 
 
@@ -190,16 +196,16 @@ while (MOVEARM_MODE):
             cv2.imshow("Image", detected_markers)
             
             print(abs(objX - frameX))
-            if (abs(objX - frameX) < 10 ) and (test == "out"):
+            if (abs(objX - frameX) ==0 ) and (test == "out"):
                 pullout()
                 print("out")
                 test = "in"
                 time.sleep(8)
-                motor.simMotorRun([30, 227, 280, 49, 143], [0, 1, 2, 3, 4]) # back to pull down more so that the camera can see the AR Marker
+                motor.simMotorRun([30, 223, 301, 49, 143], [0, 1, 2, 3, 4]) # back to pull down more so that the camera can see the AR Marker
                 objX = 51
             
             
-            if (abs(objX - frameX) < 10 ) and (test == "in"):
+            if ((objX - frameX) == 0 ) and (test == "in"):
                 pushin()
                 print("out")
                 test = "out"
