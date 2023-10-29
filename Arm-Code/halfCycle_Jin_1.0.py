@@ -87,10 +87,6 @@ if arduinoinput == '1':
     print("push battery into BVM!")
     pushin()
 
-# Push battery into BVM
-time.sleep(3)
-pushin()
-
 time.sleep(5)  # let BVM cycle battery
 
 # Take battery out of BVM
@@ -103,12 +99,11 @@ ser.write(b'b')  # Tell Arduino it's good to go
 print("waiting for s")
 arduinoinput = ser.readline()
 if arduinoinput == '1':
-    # Push battery into BVM
+    # Push battery into GCS
     time.sleep(3)
     print("push battery into GSC!")
     pushin()
 
-# Push battery into GCS
-
-pushin()
+# Take battery out of GCS
+pullout()
 GPIO.cleanup()
