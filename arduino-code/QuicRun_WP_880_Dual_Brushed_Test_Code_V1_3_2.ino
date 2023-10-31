@@ -148,10 +148,8 @@ void loop() {
     gradientControl(forward_speed);
     if(distanceBack < 10)                       //Check if the distance is less than or equal to 10 cm  from the front
     {
-      //Serial.write('s');
-      for(int i = 0;i<10;i++)
-        Serial.write('s');
       direction = 'S';                          //Set direction to none to trigger a stop
+      Serial.write('1');
       delay(3000);
     }
   }
@@ -166,7 +164,7 @@ void loop() {
     {
       is_reverse = false;
       direction = 'S';                          //Set direction to none to trigger a stop
-      Serial.write('s');
+      Serial.write('1');
       delay(3000);
     }
   }
