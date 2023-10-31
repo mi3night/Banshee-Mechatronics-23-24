@@ -219,7 +219,7 @@ void senseWall()
     {
       direction = 1;
     }
-    else if(py_input == 'bvm') //For BVM
+    else if(py_input == 'v') //For BVM
     {
       direction = -1;
     }

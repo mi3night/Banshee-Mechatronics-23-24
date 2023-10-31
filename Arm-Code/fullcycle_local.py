@@ -98,6 +98,7 @@ time.sleep(5)  # let BVM cycle battery
 
 # Take battery out of BVM
 pullout()
+time.sleep(3)
 print("sending b to arduino")
 ser.write(b'v')  # Tell Arduino it's good to go
 
