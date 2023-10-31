@@ -149,14 +149,12 @@ void loop() {
     if(distanceBack < 10)                       //Check if the distance is less than or equal to 10 cm  from the front
     {
       direction = 'S';                          //Set direction to none to trigger a stop
-      Serial.write('g');
+      Serial.write('1');
       delay(3000);
     }
   }
   else if(direction == 'B')                     //Check if direction is set as backwards (GCS)
   {      
-    for(int i = 0;i<10;i++)
-        Serial.write('s');
     digitalWrite(blue_led,LOW);                 //Turn on LED for reverse movement state
     digitalWrite(green_led,HIGH);               //Turn on LED for reverse movement state
     reverse(reverse_speed);
@@ -164,7 +162,7 @@ void loop() {
     {
       is_reverse = false;
       direction = 'S';                          //Set direction to none to trigger a stop
-      Serial.write('b');
+      Serial.write('1');
       delay(3000);
     }
   }
@@ -173,25 +171,4 @@ void loop() {
     digitalWrite(green_led,LOW);               //Turn on LED for reverse movement state
     servoLeft.write(midpoint);                    //Set left side motors postion to 90
     servoRight.write(midpoint);                   //Set right side motors postion to 90
-  /*
-    while(Serial.available())
-      {
-        py_input = Serial.readStringUntil('\n');
-      }
-      //Original serial in
-      if(py_input == 'g') //For GCS
-      {
-        direction = 'G';
-      }
-      else if(py_input == 'b') //For BVM
-      {
-        direction = 'B';
-      }
-      else{
-        direction = 'S';
-        Serial.write('s');
-      }
-      */
-  
-  }
 }
