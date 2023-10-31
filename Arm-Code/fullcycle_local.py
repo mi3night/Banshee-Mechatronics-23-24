@@ -101,7 +101,9 @@ pullout()
 time.sleep(3)
 print("sending b to arduino")
 ser.write(b'v')  # Tell Arduino it's good to go
-
+time.sleep(0.5)
+response = ser.readline().strip().decode()
+print(response)
 # Wait for arduino to send s, means it has arrived at GCS
 while True:
     response = ser.readline().strip()
