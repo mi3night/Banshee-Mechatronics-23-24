@@ -82,7 +82,7 @@ to send the pod backwards. 92 -> 91 -> 90 -> .. you get the point
 "Forward" and "Backward" is arbitarty for now
 */
 //Libraries
-#include <BTP.h> 
+#include "BTP.h"
 //String py_input = "";
 //Setup Function
 const int reset_pin = 13;
@@ -149,7 +149,7 @@ void loop() {
     if(distanceBack < 10)                       //Check if the distance is less than or equal to 10 cm  from the front
     {
       direction = 'S';                          //Set direction to none to trigger a stop
-      Serial.write('1');
+      Serial.write('g');
       delay(3000);
     }
   }
@@ -164,7 +164,7 @@ void loop() {
     {
       is_reverse = false;
       direction = 'S';                          //Set direction to none to trigger a stop
-      Serial.write('1');
+      Serial.write('b');
       delay(3000);
     }
   }
