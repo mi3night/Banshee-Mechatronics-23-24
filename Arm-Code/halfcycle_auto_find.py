@@ -28,24 +28,31 @@ portsList = []
 for onePort in ports:
     portsList.append(str(onePort))
     print(str(onePort))
-if(portsList[0]== "/dev/ttyUSB0 - USB <-> Serial Converter - USB <-> Serial Converter"):
-    PORT_NUM = '/dev/ttyUSB0'  # for rpi
-    if(portsList[1] == '/dev/ttyUSB1 - USB Serial'):
+    if(onePort == "/dev/ttyUSB0 - USB <-> Serial Converter - USB <-> Serial Converter"):
+        PORT_NUM = '/dev/ttyUSB0'  # for rpi
         ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
     else:
-        ser = serial.Serial('/dev/ttyUSB2', 9600, timeout=1)
-elif (portsList[1] == "/dev/ttyUSB1 - USB <-> Serial Converter - USB <-> Serial Converter"):
-    PORT_NUM = '/dev/ttyUSB1'  # for rpi
-    if(portsList[0] == '/dev/ttyUSB0 - USB Serial'):
+        PORT_NUM = '/dev/ttyUSB1'  # for rpi
         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-    else:
-        ser = serial.Serial('/dev/ttyUSB2', 9600, timeout=1)
-else:
-    PORT_NUM = '/dev/ttyUSB2'  # for rpi
-    if (portsList[0] == '/dev/ttyUSB0 - USB Serial'):
-        ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-    else:
-        ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
+
+# if(portsList[0]== "/dev/ttyUSB0 - USB <-> Serial Converter - USB <-> Serial Converter"):
+#     PORT_NUM = '/dev/ttyUSB0'  # for rpi
+#     if(portsList[1] == '/dev/ttyUSB1 - USB Serial'):
+#         ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
+#     else:
+#         ser = serial.Serial('/dev/ttyUSB2', 9600, timeout=1)
+# elif (portsList[1] == "/dev/ttyUSB1 - USB <-> Serial Converter - USB <-> Serial Converter"):
+#     PORT_NUM = '/dev/ttyUSB1'  # for rpi
+#     if(portsList[0] == '/dev/ttyUSB0 - USB Serial'):
+#         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+#     else:
+#         ser = serial.Serial('/dev/ttyUSB2', 9600, timeout=1)
+# else:
+#     PORT_NUM = '/dev/ttyUSB2'  # for rpi
+#     if (portsList[0] == '/dev/ttyUSB0 - USB Serial'):
+#         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+#     else:
+#         ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
 
 serialInst.close()
 
