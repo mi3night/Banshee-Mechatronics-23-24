@@ -90,6 +90,7 @@ while True:
 
 
 # Push battery into BVM
+ser.flush()
 time.sleep(3)
 pushin()
 
