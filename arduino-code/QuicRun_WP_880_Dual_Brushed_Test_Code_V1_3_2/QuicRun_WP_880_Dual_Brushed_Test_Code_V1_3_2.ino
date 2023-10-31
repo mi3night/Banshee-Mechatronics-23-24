@@ -82,9 +82,11 @@ to send the pod backwards. 92 -> 91 -> 90 -> .. you get the point
 "Forward" and "Backward" is arbitarty for now
 */
 //Libraries
-#include "BTP.h" 
-
+#include "BTP.h"
+//String py_input = "";
 //Setup Function
+const int reset_pin = 13;
+
 void setup() {
   //Serial communication startup
   Serial.begin(9600);                           //Set baudrate to 9600
@@ -101,7 +103,7 @@ void setup() {
   pinMode(trigBack, OUTPUT);                    //trigFront pin declerartion as OUTPUT
   pinMode(echoBack, INPUT);                     //echoFront pin declerartion as OUTPUT
   pinMode(power, OUTPUT);                       //power pin declerartion as OUTPUT
-
+  pinMode(reset_pin, INPUT);
   //LED start up
   digitalWrite(blue_led,HIGH);                  //Turn on LED for set up
   digitalWrite(green_led,HIGH);                 //Turn on LED for reverse movement state
@@ -119,11 +121,27 @@ void setup() {
 
 //Main Looping Fucntion
 void loop() {
-  //senseWall();  
+  while(digitalRead(reset_pin) == LOW);  
   distance = getdistance(trigFront,echoFront);
-  distanceBack = getdistance(trigBack,echoBack);   
+  distanceBack = getdistance(trigBack,echoBack);
+  delay(50);
 
-  if(direction == 'B')                          //Check if direction is set as forward
+  if (Serial.available()>0) {
+    char mode = Serial.read();
+
+    switch(mode) {
+      case 'b':                       //Mode 1: Pod moving to the right
+        direction = 'B';        
+        break;
+      case 'g':                       //Mode 2: Pod moving to the left
+        direction = 'G';
+        break;
+      default:
+        break;
+    }
+  }
+
+  if(direction == 'G')                          //Check if direction is set as forward
   {
     digitalWrite(blue_led,HIGH);                //Turn on LED for forward movement state
     digitalWrite(green_led,LOW);                //Turn on LED for reverse movement state
@@ -131,34 +149,49 @@ void loop() {
     if(distanceBack < 10)                       //Check if the distance is less than or equal to 10 cm  from the front
     {
       direction = 'S';                          //Set direction to none to trigger a stop
+      Serial.write('g');
+      delay(3000);
     }
   }
-  else if(direction == 'G')                     //Check if direction is set as backwards (GCS)
-  {
+  else if(direction == 'B')                     //Check if direction is set as backwards (GCS)
+  {      
+    for(int i = 0;i<10;i++)
+        Serial.write('s');
     digitalWrite(blue_led,LOW);                 //Turn on LED for reverse movement state
     digitalWrite(green_led,HIGH);               //Turn on LED for reverse movement state
     reverse(reverse_speed);
-    if(distance < 20)                           //Check if the distance is less than or equal to 10 cm from the back
+    if(distance < 10)                           //Check if the distance is less than or equal to 10 cm from the back
     {
       is_reverse = false;
       direction = 'S';                          //Set direction to none to trigger a stop
+      Serial.write('b');
+      delay(3000);
     }
   }
-  else{                                         //Check if direction not forward or backward
-    digitalWrite(blue_led,LOW);                 //Turn off LED for no movement state
-    digitalWrite(green_led,LOW);                //Turn on LED for reverse movement state
-    gradientControl(midpoint);
-    Serial.println("stop");
-    delay(5000);
-
-    if(distance < 20)                    //Check if the distance is less than or equal to 10 cm from the back
-    {
-      is_reverse = false;
-      direction = 'B';                      //Set direction to none to trigger a stop
-    }
-    else if(distanceBack < 10)
-    {
-      direction = 'G';
-    } 
+  else if(direction == 'S'){                                         //Check if direction not forward or backward
+    digitalWrite(blue_led,LOW);                 //Turn on LED for reverse movement state
+    digitalWrite(green_led,LOW);               //Turn on LED for reverse movement state
+    servoLeft.write(midpoint);                    //Set left side motors postion to 90
+    servoRight.write(midpoint);                   //Set right side motors postion to 90
+  /*
+    while(Serial.available())
+      {
+        py_input = Serial.readStringUntil('\n');
+      }
+      //Original serial in
+      if(py_input == 'g') //For GCS
+      {
+        direction = 'G';
+      }
+      else if(py_input == 'b') //For BVM
+      {
+        direction = 'B';
+      }
+      else{
+        direction = 'S';
+        Serial.write('s');
+      }
+      */
+  
   }
 }
