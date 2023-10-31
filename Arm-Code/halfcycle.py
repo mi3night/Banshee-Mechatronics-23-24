@@ -11,6 +11,7 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(16, GPIO.OUT)
 GPIO.output(16, GPIO.LOW)
+ADDR_PRESENT_POSITION = 132 #Address of the positions of the motors
 BASE_ID = 1
 BICEP_ID = 2
 FOREARM_ID = 3
@@ -19,7 +20,7 @@ CLAW_ID = 0
 #GPIO 23 physical pin 16 arduino reset pin
 
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
-PORT_NUM = '/dev/ttyUSB0'  # for rpi
+PORT_NUM = '/dev/ttyUSB0'  # for rpi, change depedning on port recognized by computer
 ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)  # for rpi
 
 BAUDRATE = 1000000
@@ -35,23 +36,23 @@ SERVER_PORT = 12345
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((SERVER_HOST, SERVER_PORT))
 
-motor.portInitialization(PORT_NUM, ALL_IDs)
+motor.portInitialization(PORT_NUM, ALL_IDs) #portInitialization necessary at beginning
 
 
 
 def pullout():
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
-    time.sleep(4)
+    checkMovement(MOVE_IDs)
     motor.simMotorRun([31, 223, 90, 222, 190], [0, 1, 2, 3, 4])  # grab battery
-    time.sleep(2)
+    checkMovement(MOVE_IDs)
     motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
     motor.simMotorRun([129, 104, 285], [2, 3, 4])  # pull out
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])
     motor.simMotorRun([137, 62, 285], [2, 3, 4])  # pull out more
-    time.sleep(3)
+    checkMovement(MOVE_IDs)
     motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
-    time.sleep(7)
+    checkMovement(MOVE_IDs)
 
 def pushin():
     time.sleep(7)
@@ -75,6 +76,22 @@ while True:
     response = client_socket.recv(1024)
     if response.decode() == 'ready':
         break
+
+def checkMovement(ids):
+    motorStatus = [0] * len(ids)
+    finished = [1] * len(ids)
+    firstPosition = 0
+    secondPosition = 0
+    while True:
+        for id in (ids):
+            firstPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
+            time.sleep(.1)
+            secondPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
+            if (abs(firstPosition - secondPosition) < 5):
+                motorStatus[id] = 1
+        if (motorStatus == finished):
+            print("finished")
+            break
 
 # Take Battery from GCS
 pullout()
