@@ -95,7 +95,7 @@ int direction;                            //direction var used to determine whic
 int midpoint = 90;
 int curr_speed = 90;
 int break_point = 85;
-int forward_speed = 98;
+int forward_speed = 99;
 int reverse_speed = 76;
 bool is_reverse = false;
 
