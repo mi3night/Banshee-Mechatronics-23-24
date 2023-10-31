@@ -67,7 +67,7 @@ ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
-
+print('port num is ' + PORT_NUM)
 def checkMovement(ids):
     motorStatus = [0] * len(ids)
     finished = [1] * len(ids)
