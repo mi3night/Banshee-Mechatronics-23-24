@@ -49,54 +49,6 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
 
-
-
-def pullout():
-    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
-    motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
-    checkMovement(MOVE_IDs)
-    motor.simMotorRun([31, 223, 90, 222, 190], [0, 1, 2, 3, 4])  # grab battery
-    checkMovement(MOVE_IDs)
-    motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
-    motor.simMotorRun([129, 104, 285], [2, 3, 4])  # pull out
-    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])
-    motor.simMotorRun([137, 62, 285], [2, 3, 4])  # pull out more
-    checkMovement(MOVE_IDs)
-    motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
-    checkMovement(MOVE_IDs)
-
-def pushin():
-    time.sleep(7)
-    motor.simMotorRun([187], [2])  # back to pull down more
-    time.sleep(3)
-    motor.simMotorRun([150, 80], [2, 3])
-    time.sleep(3)
-    motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
-    motor.simMotorRun([25, 227, 130, 130, 250], [0, 1, 2, 3, 4])  # push in
-    motor.simMotorRun([25, 227, 90, 222, 194], [0, 1, 2, 3, 4])
-    time.sleep(3)
-    motor.simMotorRun([90, 227, 90, 222, 194], [0, 1, 2, 3, 4])
-    time.sleep(3)
-    motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])
-    time.sleep(7)
-    motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
-
-# arduinoinput = ''
-
-pullout()
-# GPIO.output(16, GPIO.HIGH)
-# time.sleep(8)
-# ser.write(b'g')  # Tell Arduino it's good to go
-
-# Wait for arduino to send s, means it has arrived at BVM
-# while True:
-#     response = ser.readline().strip()
-#     arduinoinput = response.decode()
-#     print(arduinoinput[0] + " flag ")
-#     if arduinoinput[0] == 's':
-#         print("push battery into BVM!")
-#         break
-
 def checkMovement(ids):
     motorStatus = [0] * len(ids)
     finished = [1] * len(ids)
@@ -113,6 +65,53 @@ def checkMovement(ids):
             print("finished")
             break
 
+def pullout():
+    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.simMotorRun([90, 223, 90, 222, 185], [0, 1, 2, 3, 4])  # set chamber
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([31, 223, 90, 222, 190], [0, 1, 2, 3, 4])  # grab battery
+    checkMovement(MOVE_IDs)
+    motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
+    motor.simMotorRun([129, 104, 285], [2, 3, 4])  # pull out
+    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])
+    motor.simMotorRun([137, 62, 285], [2, 3, 4])  # pull out more
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
+    checkMovement(MOVE_IDs)
+
+def pushin():
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([187], [2])  # back to pull down more
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([150, 80], [2, 3])
+    checkMovement(MOVE_IDs)
+    motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
+    motor.simMotorRun([25, 227, 130, 130, 250], [0, 1, 2, 3, 4])  # push in
+    motor.simMotorRun([25, 227, 90, 222, 194], [0, 1, 2, 3, 4])
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([90, 227, 90, 222, 194], [0, 1, 2, 3, 4])
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([30, 227, 270, 47, 272], [0, 1, 2, 3, 4])
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([30, 227, 301, 49, 143], [0, 1, 2, 3, 4])
+    checkMovement(MOVE_IDs)
+
+# arduinoinput = ''
+
+pullout()
+# GPIO.output(16, GPIO.HIGH)
+# ser.write(b'g')  # Tell Arduino it's good to go
+
+# Wait for arduino to send s, means it has arrived at BVM
+# while True:
+#     response = ser.readline().strip()
+#     arduinoinput = response.decode()
+#     print(arduinoinput[0] + " flag ")
+#     if arduinoinput[0] == 's':
+#         print("push battery into BVM!")
+#         break
+
+
 # Push battery into BVM
-# pushin()
+pushin()
 # GPIO.cleanup()
