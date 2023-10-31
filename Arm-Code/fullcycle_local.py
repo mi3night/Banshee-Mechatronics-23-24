@@ -99,7 +99,7 @@ time.sleep(5)  # let BVM cycle battery
 # Take battery out of BVM
 pullout()
 print("sending b to arduino")
-ser.write(b'b')  # Tell Arduino it's good to go
+ser.write(b'bvm')  # Tell Arduino it's good to go
 
 # Wait for arduino to send s, means it has arrived at GCS
 while True:
