@@ -213,7 +213,7 @@ void senseWall()
       delay(50);
       digitalWrite(blue_led,LOW);                  //Turn off LED for set up
       digitalWrite(green_led,LOW);               //Turn on LED for reverse movement state
-      Serial.write(py_input)
+      Serial.print(py_input);
     }
     //Original serial in
     if(py_input == 'g') //For GCS
