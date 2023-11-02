@@ -47,11 +47,12 @@ print('port num is ' + PORT_NUM)
 motor.portInitialization(PORT_NUM, ALL_IDs)
 
 def trajectoryMove(angles, ids):
-    currents = []
+    print('starting trajectory')
+    currents = [1, 2, 3, 4, 5]
     index = 0
     differences = []
     for id in ids:
-        currents.append(motor._map(motor.ReadMotorData(id, 132), 0, 4095, 0, 360))
+        # currents.append(motor._map(motor.ReadMotorData(id, 132), 0, 4095, 0, 360))
         differences.append((angles[index] - currents[index])/10)
         index += 1
     loop = 0
@@ -81,12 +82,12 @@ def checkMovement(ids):
             break
 
 def initializePosition():
-    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
-    motor.simMotorRun([90, 225, 177, 226, 180], [0, 1, 2, 3, 4])  # set arm straight up
-    checkMovement(MOVE_IDs)
-    motor.simMotorRun([90, 223, 300, 48, 147], [0, 1, 2, 3, 4])
-    checkMovement(MOVE_IDs)
-    print('initialize completed')
+    # motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    # motor.simMotorRun([90, 225, 177, 226, 180], [0, 1, 2, 3, 4])  # set arm straight up
+    # checkMovement(MOVE_IDs)
+    # motor.simMotorRun([90, 223, 300, 48, 147], [0, 1, 2, 3, 4])
+    # checkMovement(MOVE_IDs)
+    # print('initialize completed')
     trajectoryMove([90, 225, 177, 226, 180], [0, 1, 2, 3, 4])
     checkMovement(MOVE_IDs)
     trajectoryMove([90, 223, 300, 48, 147], [0, 1, 2, 3, 4])
