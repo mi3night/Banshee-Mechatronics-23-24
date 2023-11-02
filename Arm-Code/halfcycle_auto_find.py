@@ -48,7 +48,7 @@ motor.portInitialization(PORT_NUM, ALL_IDs)
 
 def trajectoryMove(angles, ids):
     print('starting trajectory')
-    currents = [1, 2, 3, 4, 5]
+    currents = []
     index = 0
     differences = []
     for id in ids:
