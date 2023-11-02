@@ -36,32 +36,10 @@ for onePort in ports:
         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
         print('ser = 0')
 
-# if(portsList[0]== "/dev/ttyUSB0 - USB <-> Serial Converter - USB <-> Serial Converter"):
-#     PORT_NUM = '/dev/ttyUSB0'  # for rpi
-#     if(portsList[1] == '/dev/ttyUSB1 - USB Serial'):
-#         ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
-#     else:
-#         ser = serial.Serial('/dev/ttyUSB2', 9600, timeout=1)
-# elif (portsList[1] == "/dev/ttyUSB1 - USB <-> Serial Converter - USB <-> Serial Converter"):
-#     PORT_NUM = '/dev/ttyUSB1'  # for rpi
-#     if(portsList[0] == '/dev/ttyUSB0 - USB Serial'):
-#         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-#     else:
-#         ser = serial.Serial('/dev/ttyUSB2', 9600, timeout=1)
-# else:
-#     PORT_NUM = '/dev/ttyUSB2'  # for rpi
-#     if (portsList[0] == '/dev/ttyUSB0 - USB Serial'):
-#         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-#     else:
-#         ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
-
 serialInst.close()
 
 
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
-# PORT_NUM = '/dev/ttyUSB0'  # for rpi
-# ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)  # for rpi
-
 BAUDRATE = 1000000
 MOVEARM_MODE = 1
 ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
