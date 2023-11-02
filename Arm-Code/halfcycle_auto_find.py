@@ -61,6 +61,7 @@ def trajectoryMove(angles, ids):
     while (loop < 2):
         currents = [x + y for x, y in zip(currents, differences)]
         # motor.simMotorRun(currents, [0, 1, 2, 3, 4])
+        loop += 1 
     print('finished')
         
     
