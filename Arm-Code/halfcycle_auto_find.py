@@ -45,6 +45,24 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 print('port num is ' + PORT_NUM)
 motor.portInitialization(PORT_NUM, ALL_IDs)
+
+def trajectoryMove(angles, ids):
+    currents = []
+    index = 0
+    differences = []
+    for id in ids:
+        currents.append(motor._map(motor.ReadMotorData(id, 132), 0, 4095, 0, 360))
+        differences.append((angles[index] - currents[index])/10)
+        index += 1
+    loop = 0
+    while (loop < 10):
+        motor.simMotorRun(currents + differences, [0, 1, 2, 3, 4])
+        currents = [x + y for x, y in zip(currents, differences)]
+    print('finished')
+        
+    
+
+
 def checkMovement(ids):
     motorStatus = [0] * len(ids)
     finished = [1] * len(ids)
@@ -67,6 +85,10 @@ def initializePosition():
     motor.simMotorRun([90, 223, 300, 48, 147], [0, 1, 2, 3, 4])
     checkMovement(MOVE_IDs)
     print('initialize completed')
+    trajectoryMove([90, 225, 177, 226, 180], [0, 1, 2, 3, 4])
+    checkMovement(MOVE_IDs)
+    trajectoryMove([90, 223, 300, 48, 147], [0, 1, 2, 3, 4])
+    checkMovement(MOVE_IDs)
 
 def pullout():
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
@@ -101,7 +123,7 @@ def pushin():
 
 # arduinoinput = ''
 initializePosition()
-pullout()
+# pullout()
 # GPIO.output(16, GPIO.HIGH)
 # ser.write(b'g')  # Tell Arduino it's good to go
 
@@ -116,5 +138,5 @@ pullout()
 
 
 # Push battery into BVM
-pushin()
+# pushin()
 # GPIO.cleanup()
