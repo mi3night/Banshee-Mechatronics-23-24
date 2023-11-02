@@ -30,6 +30,21 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 motor.portInitialization(PORT_NUM, ALL_IDs)
 
+def checkMovement(ids):
+    motorStatus = [0] * len(ids)
+    finished = [1] * len(ids)
+    firstPosition = 0
+    secondPosition = 0
+    while True:
+        for id in (ids):
+            firstPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
+            time.sleep(.1)
+            secondPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
+            if (abs(firstPosition - secondPosition) < 5):
+                motorStatus[id] = 1
+        if (motorStatus == finished):
+            print("finished")
+            break
 
 def pullout():
     print("pull out start")
