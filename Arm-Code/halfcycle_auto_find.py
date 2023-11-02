@@ -60,8 +60,15 @@ def checkMovement(ids):
             if (abs(firstPosition - secondPosition) < 5):
                 motorStatus[id] = 1
         if (motorStatus == finished):
-            print("finished")
             break
+
+def initializePosition():
+    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.simMotorRun(c)  # set arm straight up
+    checkMovement(MOVE_IDs)
+    motor.simMotorRun([90, 223, 300, 48, 147], [0, 1, 2, 3, 4])
+    checkMovement(MOVE_IDs)
+    print('initialize completed')
 
 def pullout():
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
@@ -95,7 +102,7 @@ def pushin():
     checkMovement(MOVE_IDs)
 
 # arduinoinput = ''
-
+initializePosition()
 pullout()
 # GPIO.output(16, GPIO.HIGH)
 # ser.write(b'g')  # Tell Arduino it's good to go
