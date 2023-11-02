@@ -196,13 +196,31 @@ void senseWall()
     while(Serial.available())
     {
       py_input = Serial.readStringUntil('\n');
+      digitalWrite(blue_led,HIGH);                  //Turn off LED for set up
+      digitalWrite(green_led,HIGH);               //Turn on LED for reverse movement state
+      delay(50);
+      digitalWrite(blue_led,LOW);                  //Turn off LED for set up
+      digitalWrite(green_led,LOW);               //Turn on LED for reverse movement state
+      delay(50);
+      digitalWrite(blue_led,HIGH);                  //Turn off LED for set up
+      digitalWrite(green_led,HIGH);               //Turn on LED for reverse movement state
+      delay(50);
+      digitalWrite(blue_led,LOW);                  //Turn off LED for set up
+      digitalWrite(green_led,LOW);               //Turn on LED for reverse movement state
+      delay(50);
+      digitalWrite(blue_led,HIGH);                  //Turn off LED for set up
+      digitalWrite(green_led,HIGH);               //Turn on LED for reverse movement state
+      delay(50);
+      digitalWrite(blue_led,LOW);                  //Turn off LED for set up
+      digitalWrite(green_led,LOW);               //Turn on LED for reverse movement state
+      Serial.print(py_input);
     }
     //Original serial in
     if(py_input == 'g') //For GCS
     {
       direction = 1;
     }
-    else if(py_input == 'b') //For BVM
+    else if(py_input == 'v') //For BVM
     {
       direction = -1;
     }

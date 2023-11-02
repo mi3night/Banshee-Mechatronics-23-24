@@ -84,7 +84,7 @@ while True:
     response = ser.readline().strip()
     print(arduinoinput)
     arduinoinput = response.decode()
-    if arduinoinput[0] == 's':
+    if arduinoinput == '1':
         print("push battery into BVM!")
         break
 
@@ -100,7 +100,7 @@ time.sleep(5)  # let BVM cycle battery
 pullout()
 time.sleep(3)
 print("sending b to arduino")
-ser.write(b'v')  # Tell Arduino it's good to go
+ser.write(b'b')  # Tell Arduino it's good to go
 time.sleep(0.5)
 response = ser.readline().strip().decode()
 print(response)
@@ -108,7 +108,7 @@ print(response)
 while True:
     response = ser.readline().strip()
     arduinoinput = response.decode()
-    if arduinoinput[0] == 's':
+    if arduinoinput == '1':
         print("push battery into GCS!")
         break
 
