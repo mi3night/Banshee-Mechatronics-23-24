@@ -64,7 +64,7 @@ def checkMovement(ids):
 
 def initializePosition():
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
-    motor.simMotorRun(c)  # set arm straight up
+    motor.simMotorRun([90, 225, 177, 226, 180], [0, 1, 2, 3, 4])  # set arm straight up
     checkMovement(MOVE_IDs)
     motor.simMotorRun([90, 223, 300, 48, 147], [0, 1, 2, 3, 4])
     checkMovement(MOVE_IDs)
