@@ -21,8 +21,21 @@ CLAW_ID = 0
 #GPIO 23 physical pin 16 arduino reset pin
 
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
-PORT_NUM = '/dev/ttyUSB0'  # for rpi connection to arm
-ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)  # for rpi
+ports = serial.tools.list_ports.comports()
+serialInst = serial.Serial()
+
+PORT_NUM = '/dev/ttyUSB0'  # for rpi
+serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
+
+for onePort in ports:
+    port = str(onePort)
+    print(port)
+    if 'USB1 - USB <->' in port:
+        PORT_NUM = '/dev/ttyUSB1'  # for rpi
+    if 'USB0 - USB Serial' in port:
+        ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+
+serialInst.close()
 
 BAUDRATE = 1000000
 MOVEARM_MODE = 1

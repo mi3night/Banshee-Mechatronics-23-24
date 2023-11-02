@@ -23,18 +23,16 @@ CLAW_ID = 0
 ports = serial.tools.list_ports.comports()
 serialInst = serial.Serial()
 
-portsList = []
 PORT_NUM = '/dev/ttyUSB0'  # for rpi
 serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
+
 for onePort in ports:
-    portsList.append(str(onePort))
-    print(str(onePort))
-    if 'USB1 - USB <->' in str(onePort):
+    port = str(onePort)
+    print(port)
+    if 'USB1 - USB <->' in port:
         PORT_NUM = '/dev/ttyUSB1'  # for rpi
-        print('port num = 1')
-    if 'USB0 - USB Serial' in str(onePort):
+    if 'USB0 - USB Serial' in port:
         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-        print('ser = 0')
 
 serialInst.close()
 
