@@ -99,24 +99,18 @@ if arduinoinput == '1':
     time.sleep(3)
     print("push battery into BVM!")
     pushin()
-
-time.sleep(5)  # let BVM cycle battery
-
-# Take battery out of BVM
-pullout()
-print("sending b to arduino")
-ser.write(b'b')  # Tell Arduino it's good to go
-
-# Wait for arduino to send s, means it has arrived at GCS
-
-print("waiting for s")
-arduinoinput = ser.readline()
-if arduinoinput == '1':
+    time.sleep(5)  # let BVM cycle battery
+    # Take battery out of BVM
+    pullout()
+    print("sending b to arduino")
+    ser.write(b'b')  # Tell Arduino it's good to go
+else if arduinoinput == '2'
+    # Wait for arduino to send s, means it has arrived at GCS
     # Push battery into GCS
     time.sleep(3)
     print("push battery into GSC!")
     pushin()
+    pullout()
+    # Take battery out of GCS
 
-# Take battery out of GCS
-pullout()
 GPIO.cleanup()
