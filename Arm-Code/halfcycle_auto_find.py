@@ -31,8 +31,10 @@ for onePort in ports:
     print(str(onePort))
     if (onePort == "/dev/ttyUSB1 - USB <-> Serial Converter - USB <-> Serial Converter"):
         PORT_NUM = '/dev/ttyUSB1'  # for rpi
+        print('port num = 1')
     if (onePort == '/dev/ttyUSB0 - USB Serial'):
         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+        print('ser = 0')
 
 # if(portsList[0]== "/dev/ttyUSB0 - USB <-> Serial Converter - USB <-> Serial Converter"):
 #     PORT_NUM = '/dev/ttyUSB0'  # for rpi
