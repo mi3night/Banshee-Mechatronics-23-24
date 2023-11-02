@@ -52,7 +52,7 @@ def trajectoryMove(angles, ids):
     index = 0
     differences = []
     for id in ids:
-        # currents.append(motor._map(motor.ReadMotorData(id, 132), 0, 4095, 0, 360))
+        currents.append(motor._map(motor.ReadMotorData(id, 132), 0, 4095, 0, 360))
         differences.append((angles[index] - currents[index])/10)
         index += 1
     loop = 0
