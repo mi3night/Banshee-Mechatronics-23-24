@@ -20,8 +20,21 @@ CLAW_ID = 0
 
 
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
+ports = serial.tools.list_ports.comports()
+serialInst = serial.Serial()
+
 PORT_NUM = '/dev/ttyUSB0'  # for rpi
-ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)  # for rpi
+serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
+
+for onePort in ports:
+    port = str(onePort)
+    print(port)
+    if 'USB1 - USB <->' in port:
+        PORT_NUM = '/dev/ttyUSB1'  # for rpi
+    if 'USB0 - USB Serial' in port:
+        ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+
+serialInst.close()
 
 BAUDRATE = 1000000
 MOVEARM_MODE = 1
@@ -86,24 +99,18 @@ if arduinoinput == '1':
     time.sleep(3)
     print("push battery into BVM!")
     pushin()
-
-time.sleep(5)  # let BVM cycle battery
-
-# Take battery out of BVM
-pullout()
-print("sending b to arduino")
-ser.write(b'b')  # Tell Arduino it's good to go
-
-# Wait for arduino to send s, means it has arrived at GCS
-
-print("waiting for s")
-arduinoinput = ser.readline()
-if arduinoinput == '1':
+    time.sleep(5)  # let BVM cycle battery
+    # Take battery out of BVM
+    pullout()
+    print("sending b to arduino")
+    ser.write(b'b')  # Tell Arduino it's good to go
+else if arduinoinput == '2'
+    # Wait for arduino to send s, means it has arrived at GCS
     # Push battery into GCS
     time.sleep(3)
     print("push battery into GSC!")
     pushin()
+    pullout()
+    # Take battery out of GCS
 
-# Take battery out of GCS
-pullout()
 GPIO.cleanup()

@@ -49,7 +49,7 @@ def pullout():
     checkMovement(MOVE_IDs)
     motor.simMotorRun([187], [2])  # back to pull down more
     checkMovement(MOVE_IDs)
-    motor.simMotorRun([150, 80], [2, 3])
+    motor.simMotorRun([160, 80], [2, 3])
     checkMovement(MOVE_IDs)
     motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
     motor.simMotorRun([110, 223, 130, 130, 250], [0, 1, 2, 3, 4])  # push in

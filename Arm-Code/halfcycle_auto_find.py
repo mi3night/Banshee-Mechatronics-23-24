@@ -23,43 +23,21 @@ CLAW_ID = 0
 ports = serial.tools.list_ports.comports()
 serialInst = serial.Serial()
 
-portsList = []
 PORT_NUM = '/dev/ttyUSB0'  # for rpi
-serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-for onePort in ports:
-    portsList.append(str(onePort))
-    print(str(onePort))
-    if (onePort == "/dev/ttyUSB1 - USB <-> Serial Converter - USB <-> Serial Converter"):
-        PORT_NUM = '/dev/ttyUSB1'  # for rpi
-    if (onePort == '/dev/ttyUSB1 - USB Serial'):
-        ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
+serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
 
-# if(portsList[0]== "/dev/ttyUSB0 - USB <-> Serial Converter - USB <-> Serial Converter"):
-#     PORT_NUM = '/dev/ttyUSB0'  # for rpi
-#     if(portsList[1] == '/dev/ttyUSB1 - USB Serial'):
-#         ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
-#     else:
-#         ser = serial.Serial('/dev/ttyUSB2', 9600, timeout=1)
-# elif (portsList[1] == "/dev/ttyUSB1 - USB <-> Serial Converter - USB <-> Serial Converter"):
-#     PORT_NUM = '/dev/ttyUSB1'  # for rpi
-#     if(portsList[0] == '/dev/ttyUSB0 - USB Serial'):
-#         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-#     else:
-#         ser = serial.Serial('/dev/ttyUSB2', 9600, timeout=1)
-# else:
-#     PORT_NUM = '/dev/ttyUSB2'  # for rpi
-#     if (portsList[0] == '/dev/ttyUSB0 - USB Serial'):
-#         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-#     else:
-#         ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)
+for onePort in ports:
+    port = str(onePort)
+    print(port)
+    if 'USB1 - USB <->' in port:
+        PORT_NUM = '/dev/ttyUSB1'  # for rpi
+    if 'USB0 - USB Serial' in port:
+        ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
 
 serialInst.close()
 
 
 # PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'  #for mac
-# PORT_NUM = '/dev/ttyUSB0'  # for rpi
-# ser = serial.Serial('/dev/ttyUSB1', 9600, timeout=1)  # for rpi
-
 BAUDRATE = 1000000
 MOVEARM_MODE = 1
 ALL_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
@@ -67,6 +45,29 @@ MOVE_IDs = [BASE_ID, BICEP_ID, FOREARM_ID, WRIST_ID, CLAW_ID]
 
 print('port num is ' + PORT_NUM)
 motor.portInitialization(PORT_NUM, ALL_IDs)
+
+def trajectoryMove(angles, ids):
+    print('starting trajectory')
+    currents = []
+    index = 0
+    differences = []
+    for id in ids:
+        currents.append(motor._map(motor.ReadMotorData(id, 132), 0, 4095, 0, 360))
+        differences.append((angles[index] - currents[index])/10)
+        index += 1
+    loop = 0
+    print(currents)
+    print(differences)
+    while (loop < 10):
+        currents = [x + y for x, y in zip(currents, differences)]
+        print(currents)
+        motor.simMotorRun(currents, [0, 1, 2, 3, 4])
+        loop += 1 
+    print('finished')
+        
+    
+
+
 def checkMovement(ids):
     motorStatus = [0] * len(ids)
     finished = [1] * len(ids)
@@ -80,8 +81,19 @@ def checkMovement(ids):
             if (abs(firstPosition - secondPosition) < 5):
                 motorStatus[id] = 1
         if (motorStatus == finished):
-            print("finished")
             break
+
+def initializePosition():
+    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    # motor.simMotorRun([90, 225, 177, 226, 180], [0, 1, 2, 3, 4])  # set arm straight up
+    # checkMovement(MOVE_IDs)
+    # motor.simMotorRun([90, 223, 300, 48, 147], [0, 1, 2, 3, 4])
+    # checkMovement(MOVE_IDs)
+    # print('initialize completed')
+    trajectoryMove([90, 225, 177, 226, 180], [0, 1, 2, 3, 4])
+    checkMovement(MOVE_IDs)
+    trajectoryMove([90, 223, 300, 48, 147], [0, 1, 2, 3, 4])
+    checkMovement(MOVE_IDs)
 
 def pullout():
     motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
@@ -115,8 +127,8 @@ def pushin():
     checkMovement(MOVE_IDs)
 
 # arduinoinput = ''
-
-pullout()
+initializePosition()
+# pullout()
 # GPIO.output(16, GPIO.HIGH)
 # ser.write(b'g')  # Tell Arduino it's good to go
 
@@ -131,5 +143,5 @@ pullout()
 
 
 # Push battery into BVM
-pushin()
+# pushin()
 # GPIO.cleanup()
