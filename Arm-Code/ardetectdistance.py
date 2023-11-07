@@ -1,6 +1,7 @@
 import cv2
 import pyrealsense2
 from realsense_depth import *
+import matplotlib.pyplot as plt     
 
 # Initialize Camera Intel Realsense
 dc = DepthCamera()
@@ -31,7 +32,12 @@ while True:
 
     cv2.putText(color_frame, "{}mm".format(distance), (point[0], point[1] - 20), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 2)
 
-    normalized_depth = cv2.normalize(depth_frame, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+
+
+    #filled_depth_image = np.asanyarray(filled_depth.get_data())
+
+
+    normalized_depth = cv2.normalize(depth_frame, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
     colored_depth = cv2.applyColorMap(normalized_depth, cv2.COLORMAP_JET)
     cv2.imshow("Depth Overlaid on Color", colored_depth)
     cv2.imshow("depth frame", depth_frame)
