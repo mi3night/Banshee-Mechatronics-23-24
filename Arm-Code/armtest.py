@@ -44,8 +44,6 @@ def pullout():
                      )  # ALWAYS SET SPEED BEFORE ANYTHING
     
     motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
-    
-    
     checkMovement(MOVE_IDs)
     motor.simMotorRun([187], [2])  # back to pull down more
     checkMovement(MOVE_IDs)

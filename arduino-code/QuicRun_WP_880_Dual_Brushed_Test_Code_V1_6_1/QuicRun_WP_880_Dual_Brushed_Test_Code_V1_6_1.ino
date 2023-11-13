@@ -4,7 +4,7 @@
 //Version 1.0
 //
 
-#include <BTP.h> 
+#include "BTP.h"
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -94,7 +94,7 @@ void oledDisplay(){
 
 //Main Looping Fucntion
 void loop() {
- // while(digitalRead(reset_pin) == LOW);  
+  while(digitalRead(reset_pin) == LOW);  
   distance = getdistance(trigFront,echoFront);
   distanceBack = getdistance(trigBack,echoBack);
   oledDisplay();
