@@ -74,7 +74,8 @@ def pullout():
     motor.simMotorRun([150, 62, 285], [2, 3, 4])  # pull out more
     checkMovement(MOVE_IDs)
     motor.simMotorRun([30, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
-    checkMovement(MOVE_IDs)
+    #checkMovement(MOVE_IDs)
+    time.sleep(5)
     print("pull out end")
 
 
