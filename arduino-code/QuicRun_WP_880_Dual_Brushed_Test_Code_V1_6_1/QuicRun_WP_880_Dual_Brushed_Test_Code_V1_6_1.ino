@@ -48,7 +48,7 @@ void setup() {
   delay(5000);                                  //Delay for 5 seconds
   digitalWrite(blue_led,LOW);                   //Turn off LED for set up
   digitalWrite(green_led,LOW);                  //Turn on LED for reverse movement state
-  direction = 'G';                              //Set direction var to forward (BVM)
+  direction = 'S';                              //Set direction var to forward (BVM)
 
   //default_mode(distanceBack);                   //Reset Pod to the start point (GCS)
     // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
@@ -98,21 +98,21 @@ void loop() {
   distance = getdistance(trigFront,echoFront);
   distanceBack = getdistance(trigBack,echoBack);
   oledDisplay();
-/*
+
   if (Serial.available()>0) {
-    char mode = Serial.read();
+    int mode = Serial.read();
     switch(mode) {
-      case 'b':                       //Mode 1: Pod moving to the right
+      case 1:                       //Mode 1: Pod moving to the right
         direction = 'B';        
         break;
-      case 'g':                       //Mode 2: Pod moving to the left
+      case 2:                       //Mode 2: Pod moving to the left
         direction = 'G';
         break;
       default:
         break;
     }
   }
-*/
+
 
   if(direction == 'G')                          //Check if direction is set as forward
   {
@@ -121,7 +121,7 @@ void loop() {
     while(true){
       distance = getdistance(trigFront,echoFront);
       distanceBack = getdistance(trigBack,echoBack);
-      //oledDisplay();
+      oledDisplay();
       gradientControl(forward_speed);
       if(distanceBack < 20)                       //Check if the distance is less than or equal to 10 cm  from the front
       {
@@ -140,7 +140,7 @@ void loop() {
     while(true){
       distance = getdistance(trigFront,echoFront);
       distanceBack = getdistance(trigBack,echoBack);
-      //oledDisplay();
+      oledDisplay();
       gradientControl(reverse_speed);
       //reverse(reverse_speed);
       if(distance < 20)                           //Check if the distance is less than or equal to 10 cm from the back

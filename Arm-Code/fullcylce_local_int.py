@@ -169,7 +169,7 @@ print(response)
 while True:
     response = ser.readline().strip()
     arduinoinput = response.decode()
-    if arduinoinput == '1':
+    if arduinoinput == '2':
         print("push battery into GCS!")
         break
 
