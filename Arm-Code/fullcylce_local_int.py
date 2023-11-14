@@ -137,7 +137,7 @@ pullout()
 print("Start Arduino Code")
 GPIO.output(18, GPIO.HIGH)
 time.sleep(8)
-ser.write(b'g')  # Tell Arduino it's good to go
+ser.write(b'b')  # Tell Arduino it's good to go
 
 # Wait for arduino to send s, means it has arrived at BVM
 while True:
@@ -161,7 +161,7 @@ time.sleep(5)  # let BVM cycle battery
 pullout()
 time.sleep(3)
 print("sending b to arduino")
-ser.write(b'b')  # Tell Arduino it's good to go
+ser.write(b'g')  # Tell Arduino it's good to go
 time.sleep(0.5)
 response = ser.readline().strip().decode()
 print(response)
