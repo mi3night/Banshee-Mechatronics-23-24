@@ -102,10 +102,10 @@ void loop() {
   if (Serial.available()>0) {
     int mode = Serial.read();
     switch(mode) {
-      case 1:                       //Mode 1: Pod moving to the right
+      case 'b':                       //Mode 1: Pod moving to the right
         direction = 'B';        
         break;
-      case 2:                       //Mode 2: Pod moving to the left
+      case 'g':                       //Mode 2: Pod moving to the left
         direction = 'G';
         break;
       default:
