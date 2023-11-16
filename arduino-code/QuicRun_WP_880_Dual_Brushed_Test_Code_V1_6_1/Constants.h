@@ -33,7 +33,7 @@ char direction;                            //direction var used to determine whi
 int midpoint = 91;
 int curr_speed = 90;
 int break_point = 85;
-int forward_speed = 100;
+int forward_speed = 101;
 int reverse_speed = 74;
 bool is_reverse = false;
 

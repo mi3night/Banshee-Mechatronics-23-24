@@ -92,11 +92,23 @@ void oledDisplay(){
   delay(50);
 }
 
+double getSensorAvg(int triggerPin,int echoPin, int cycles){
+  double avg = 0;
+
+  for (int i = 0; i < cycles; i++){
+    distance = getdistance(triggerPin,echoPin);
+    delay(50);
+    avg = avg + distance;
+  }
+  avg = avg / cycles;    // average
+  return avg;
+}
+
 //Main Looping Fucntion
 void loop() {
   while(digitalRead(reset_pin) == LOW);  
-  distance = getdistance(trigFront,echoFront);
-  distanceBack = getdistance(trigBack,echoBack);
+  distance = getSensorAvg(trigFront,echoFront,3);
+  distanceBack = getSensorAvg(trigBack,echoBack,3);
   oledDisplay();
 
   if (Serial.available()>0) {
@@ -119,8 +131,8 @@ void loop() {
     digitalWrite(blue_led,HIGH);                //Turn on LED for forward movement state
     digitalWrite(green_led,LOW);                //Turn on LED for reverse movement state
     while(true){
-      distance = getdistance(trigFront,echoFront);
-      distanceBack = getdistance(trigBack,echoBack);
+      distance = getSensorAvg(trigFront,echoFront,3);
+      distanceBack = getSensorAvg(trigBack,echoBack,3);
       oledDisplay();
       gradientControl(forward_speed);
       if(distanceBack < 20)                       //Check if the distance is less than or equal to 10 cm  from the front
@@ -138,8 +150,8 @@ void loop() {
     digitalWrite(blue_led,LOW);                 //Turn on LED for reverse movement state
     digitalWrite(green_led,HIGH);               //Turn on LED for reverse movement state   
     while(true){
-      distance = getdistance(trigFront,echoFront);
-      distanceBack = getdistance(trigBack,echoBack);
+      distance = getSensorAvg(trigFront,echoFront,3);
+      distanceBack = getSensorAvg(trigBack,echoBack,3);
       oledDisplay();
       gradientControl(reverse_speed);
       //reverse(reverse_speed);
