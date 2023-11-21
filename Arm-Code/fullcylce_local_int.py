@@ -56,16 +56,13 @@ def pullout():
     checkMovement(MOVE_IDs)
     motor.simMotorRun([187], [2])  # back to pull down more
     checkMovement(MOVE_IDs)
-    motor.simMotorRun([160, 80], [2, 3])
+    motor.simMotorRun([170, 88], [2, 3])
     checkMovement(MOVE_IDs)
     motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
-    motor.simMotorRun([110, 223, 130, 130, 250], [0, 1, 2, 3, 4])  # push in
-    motor.simMotorRun([110, 223, 90, 222, 194], [0, 1, 2, 3, 4])
+    motor.simMotorRun([110, 223, 145, 130, 250], [0, 1, 2, 3, 4])  # push in
     checkMovement(MOVE_IDs)
     motor.simMotorRun([110, 223, 90, 222, 194], [0, 1, 2, 3, 4])
     checkMovement(MOVE_IDs)
-    
- 
     motor.simMotorRun([31, 223, 90, 222, 190], [0, 1, 2, 3, 4])  # grab battery
     checkMovement(MOVE_IDs)
     motor.dxlSetVelo([20, 20, 20, 40, 26], [0, 1, 2, 3, 4])
@@ -74,8 +71,7 @@ def pullout():
     motor.simMotorRun([150, 62, 285], [2, 3, 4])  # pull out more
     checkMovement(MOVE_IDs)
     motor.simMotorRun([30, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
-    #checkMovement(MOVE_IDs)
-    time.sleep(5)
+    checkMovement(MOVE_IDs)
     print("pull out end")
 
 
@@ -87,31 +83,7 @@ def pushin():
     motor.simMotorRun([178, 60], [2, 3])
     checkMovement(MOVE_IDs)
     motor.simMotorRun([30, 223, 130, 130, 250], [0, 1, 2, 3, 4])  # push in
-    motor.simMotorRun([30, 223, 90, 222, 210], [0, 1, 2, 3, 4])
-    checkMovement(MOVE_IDs)
-    motor.simMotorRun([110, 223, 90, 222, 194], [0, 1, 2, 3, 4])
-    checkMovement(MOVE_IDs)
-    
- 
-    motor.simMotorRun([110, 223, 90, 222, 190], [0, 1, 2, 3, 4])  # grab battery
-    checkMovement(MOVE_IDs)
-    motor.dxlSetVelo([110, 20, 20, 40, 26], [0, 1, 2, 3, 4])
-    motor.simMotorRun([129, 104, 285], [2, 3, 4])  # pull out
-    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])
-    motor.simMotorRun([150, 62, 285], [2, 3, 4])  # pull out more
-    checkMovement(MOVE_IDs)
-    motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
-    checkMovement(MOVE_IDs)
-
-    print("push in end")
-    print("push in start")
-    checkMovement(MOVE_IDs)
-    motor.simMotorRun([180], [2])  # back to pull down more
-    checkMovement(MOVE_IDs)
-    motor.simMotorRun([178, 60], [2, 3])
-    checkMovement(MOVE_IDs)
-    motor.simMotorRun([30, 223, 130, 130, 250], [0, 1, 2, 3, 4])  # push in
-    motor.simMotorRun([30, 223, 90, 222, 210], [0, 1, 2, 3, 4])
+    motor.simMotorRun([30, 223, 90, 222, 194], [0, 1, 2, 3, 4])
     checkMovement(MOVE_IDs)
     motor.simMotorRun([110, 223, 90, 222, 194], [0, 1, 2, 3, 4])
     checkMovement(MOVE_IDs)
