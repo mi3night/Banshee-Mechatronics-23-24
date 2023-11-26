@@ -1,50 +1,25 @@
 //Goal: Full functionallity using both ultrasonic sensor and get information from raspberry pi to tell Arduino Nano when to move
 //Created By: Alexander Ov
-//Created On: 11/1/23
-//Version 1.5
-/*
+//Created On: 10/02/23
+//Version 1.0
 //
-TODO:
 
-//General Notes:
-Possiblely need streaming.h but from light research it just changes how to take in IO streams of data "C++-style Output with Operator"
-
-If the code doesnt compile on the first run Go to Tools -> Processor -> Use ATmega328P (Old Bootloader)
-To make the code work the ESCs need to be in option 2 run mode
-
-LED Meanings
-Blue ON  Green ON  => Setup
-Blue ON  Green OFF => Forward
-Blue OFF Green ON  => Reverse
-Blue OFF Green OFF => Stopped
-
-FOR BTP ONLY
-int midpoint = 90;
-int curr_speed = 90;
-int break_point = 85;
-int forward_speed = 98;
-int reverse_speed = 76;
-
-So in the code, you need to make a function that overrides brake mode as follows:
-Send 80-90 degrees to the pod to make it brake. Do not send 0. If i remember correctly, these ESCs are kind of 
-violent, and 0 or 180 will send the pod flying in one direction or another.
-From this point, use the gradient descent function to gradually increase the value back to your midpoint. 
-For example, if your calibrated center point was at 92, and your brake degree is at 80, then your function would 
-send the following information to the ESC with a 50ms delay in between: 80 -> 81 -> 82 -> 83 -> 84 -> ... -> 92
-Once the control point is set back to 92, or the midpoint, then use the gradient descent back in the other direction 
-to send the pod backwards. 92 -> 91 -> 90 -> .. you get the point
--Chris Lai
-
-"Forward" and "Backward" is arbitarty for now
-*/
-//Libraries
-#include "BTP.h" 
+#include "BTP.h"
+#include <SPI.h>
+#include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-//String py_input = "";
-//Setup Function
-const int reset_pin = 13;
 
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+#define NUMFLAKES     10 // Number of snowflakes in the animation example
+void oledDisplay();
+
+const int reset_pin = 13;
 void setup() {
   //Serial communication startup
   Serial.begin(9600);                           //Set baudrate to 9600
@@ -52,9 +27,6 @@ void setup() {
   //Servo attachment
   servoLeft.attach(left_servos, 1000, 2000);    //Attaches the motor driver on pin 9 to the servoLeft object (pin, min pulse width, max pulse width in microseconds)
   servoRight.attach(right_servos, 1000, 2000);  //Attaches the motor driver on pin 10 to the servoRight object (pin, min pulse width, max pulse width in microseconds)
-
-  //Display setup 
-  Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
   //Pin IO Setup
   pinMode(blue_led, OUTPUT);                    //LED pin declerartion as OUTPUT
@@ -77,38 +49,70 @@ void setup() {
   digitalWrite(blue_led,LOW);                   //Turn off LED for set up
   digitalWrite(green_led,LOW);                  //Turn on LED for reverse movement state
   direction = 'S';                              //Set direction var to forward (BVM)
+
   //default_mode(distanceBack);                   //Reset Pod to the start point (GCS)
+    // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;); // Don't proceed, loop forever
+  }
+
+  // Show initial display buffer contents on the screen --
+  // the library initializes this with an Adafruit splash screen.
+  display.display();
+  delay(2000); // Pause for 2 seconds
+
+  // Clear the buffer
+  display.clearDisplay();
+
+  // Draw a single pixel in white
+  display.drawPixel(10, 10, SSD1306_WHITE);
+
+  // Show the display buffer on the screen. You MUST call display() after
+  // drawing commands to make them visible on screen!
+  display.display();
+  delay(2000);
+}
+
+void oledDisplay(){
+  display.clearDisplay();
+  display.setTextSize(1);             // Normal 1:1 pixel scale
+  display.setTextColor(SSD1306_WHITE);        // Draw white text
+  display.setCursor(0,0);
+  display.print(F("Dist to BVM: "));
+  display.print(distance);
+  display.setCursor(0,12);
+  display.print(F("Dist to GCS: "));
+  display.print(distanceBack);
+  display.setCursor(0,24); 
+   display.print(F("Direction: "));
+   display.print(direction);
+   display.display();
+  display.display();
+  delay(50);
+}
+
+double getSensorAvg(int triggerPin,int echoPin, int cycles){
+  double avg = 0;
+
+  for (int i = 0; i < cycles; i++){
+    distance = getdistance(triggerPin,echoPin);
+    delay(50);
+    avg = avg + distance;
+  }
+  avg = avg / cycles;    // average
+  return avg;
 }
 
 //Main Looping Fucntion
 void loop() {
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.setCursor(0,0);
-  display.print("BTP Armed");
-  display.display();
-
   while(digitalRead(reset_pin) == LOW);  
-  distance = getdistance(trigFront,echoFront);
-  distanceBack = getdistance(trigBack,echoBack);
-
-  display.clear()
-  display.setCursor(0,0);
-  display.print("Distance to BVM");
-  display.setCursor(16, 0);
-  display.print(distance);
-  display.setCursor(0,1);
-  display.print("Distance to GCS");
-  display.setCursor(16,1);
-  display.print(distanceBack);
-  display.display();
-
-  delay(50);
+  distance = getSensorAvg(trigFront,echoFront,3);
+  distanceBack = getSensorAvg(trigBack,echoBack,3);
+  oledDisplay();
 
   if (Serial.available()>0) {
-    char mode = Serial.read();
-
+    int mode = Serial.read();
     switch(mode) {
       case 'b':                       //Mode 1: Pod moving to the right
         direction = 'B';        
@@ -121,27 +125,45 @@ void loop() {
     }
   }
 
+
   if(direction == 'G')                          //Check if direction is set as forward
   {
     digitalWrite(blue_led,HIGH);                //Turn on LED for forward movement state
     digitalWrite(green_led,LOW);                //Turn on LED for reverse movement state
-    gradientControl(forward_speed);
-    if(distanceBack < 10)                       //Check if the distance is less than or equal to 10 cm  from the front
-    {
-      direction = 'S';                          //Set direction to none to trigger a stop
-      Serial.write('1');
+    while(true){
+      distance = getSensorAvg(trigFront,echoFront,3);
+      distanceBack = getSensorAvg(trigBack,echoBack,3);
+      oledDisplay();
+      gradientControl(forward_speed);
+      if(distanceBack < 20)                       //Check if the distance is less than or equal to 10 cm  from the front
+      {
+        direction = 'S';                          //Set direction to none to trigger a stop
+        Serial.write('1');
+        break;
+      }
+      delay(50);
+      gradientControl(midpoint);                   //Set right side motors postion to 90
     }
   }
   else if(direction == 'B')                     //Check if direction is set as backwards (GCS)
-  {      
+  {   
     digitalWrite(blue_led,LOW);                 //Turn on LED for reverse movement state
-    digitalWrite(green_led,HIGH);               //Turn on LED for reverse movement state
-    reverse(reverse_speed);
-    if(distance < 10)                           //Check if the distance is less than or equal to 10 cm from the back
-    {
-      is_reverse = false;
-      direction = 'S';                          //Set direction to none to trigger a stop
-      Serial.write('1');
+    digitalWrite(green_led,HIGH);               //Turn on LED for reverse movement state   
+    while(true){
+      distance = getSensorAvg(trigFront,echoFront,3);
+      distanceBack = getSensorAvg(trigBack,echoBack,3);
+      oledDisplay();
+      gradientControl(reverse_speed);
+      //reverse(reverse_speed);
+      if(distance < 20)                           //Check if the distance is less than or equal to 10 cm from the back
+      {
+        is_reverse = false;
+        direction = 'S';                          //Set direction to none to trigger a stop
+        Serial.write('1');
+        break;
+      }
+      delay(50);
+      gradientControl(midpoint);                   //Set right side motors postion to 90
     }
   }
   else if(direction == 'S'){                                         //Check if direction not forward or backward

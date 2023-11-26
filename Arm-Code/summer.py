@@ -130,68 +130,11 @@ cap = cv2.VideoCapture(1)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
-# while cap.isOpened():
-#     ret, img = cap.read()
-
-#     h, w, _ = img.shape
-#     width = 1000
-#     height = int(width*(h/w))
-#     img = cv2.resize(img, (width, height), interpolation=cv2.INTER_CUBIC)
-
-#     #Frame's center pixel
-#     h,w,_ = img.shape
-#     frameX = int(w/2)
-#     fX=int(w/2)
-#     fY=int(h/2)
-#     cv2.circle(img, (fX,fY), 3, (255, 0, 0), -1)
-#     cv2.putText(img," (" + str(fX) + " , " + str(fY) + ")", (fX,fY), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-    
-#     corners, ids, rejected = cv2.aruco.detectMarkers(img, arucoDict, parameters=arucoParams)
-
-#     detected_markers = aruco_display(corners, ids, rejected, img)
-
-#     cv2.imshow("Image", detected_markers)
-
-#     key = cv2.waitKey(1) & 0xFF
-#     if key == ord("q"):
-#         break
-
-# cv2.destroyAllWindows()
-# cap.release()
 motor.portInitialization(PORT_NUM, ALL_IDs)
 motor.dxlSetVelo([20, 20, 20, 20, 20],[0, 1, 2, 3, 4])
-motor.motorRunWithInputs([90, 227, 180, 177, 60], [0, 1, 2, 3, 4])
-# if __name__ == "__main__":
 while (MOVEARM_MODE):
         while cap.isOpened():
-#         x = int(input("Enter the goal X coordinate for the arm: "))
-#         y = int(input("Enter the goal Y coordinate for the arm: "))
-#         z = int(input("Enter the goal Z coordinate for the arm: "))
-#         print("""
-#         [0] CLAW PARALLEL TO GROUND
-#         [1] CLAW PERPENDICULAR TO GROUND
-#         [2] CLAW 45 DEGREE TO GROUND
-#         """)
-#         forearm_mode = int(input("Enter '0', '1', or '2' for forearm mode: "))
 
-#         claw_angle =  int(input("Enter the mode for the claw [0] to open and [1] to close: "))
-
-
-#         if (claw_angle == 0):
-#             motor.motorRunWithInputs([90], [0])
-#         else:
-#             motor.motorRunWithInputs([180], [0])
-
-#         coor = [x,y,z]
-#         angles = calculation.angle_Calc(coor, forearm_mode)
-#         print(angles)
-        
-#         motor.dxlSetVelo([30,18,30,30,30], ALL_IDs)
-#         motor.simMotorRun(angles, MOVE_IDs)
-
-
-#         # motor.motorRunWithInputs([180], [0])
-#         # motor.motorRunWithInputs([225], [0])
 
 
             ret, img = cap.read()
@@ -201,9 +144,7 @@ while (MOVEARM_MODE):
             height = int(width*(h/w))
             img = cv2.resize(img, (width, height), interpolation=cv2.INTER_CUBIC)
 
-            #Frame's center pixel
             h,w,_ = img.shape
-            # frameX = int(w/2)
             fX=int(w/2)
             fY=int(h/2)
             cv2.circle(img, (fX,fY), 3, (255, 0, 0), -1)
@@ -216,10 +157,6 @@ while (MOVEARM_MODE):
             cv2.imshow("Image", detected_markers)
 
 
-            # mode = input("Enter 'Y' to continue arm movement. Else, press any key: ")
-            # if (mode != 'Y'):
-            #     MOVEARM_MODE = 0
-            #     motor.portTermination()
             if(abs(objX - frameX) > 30 or abs(objY - frameY) > 30):
                  difference = objX - frameX
                  differenceZ = objY - frameY
