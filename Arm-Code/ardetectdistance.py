@@ -14,7 +14,7 @@ parameters = cv2.aruco.DetectorParameters_create()
 point = (400, 300)
 
 while True:
-    ret, depth_frame, color_frame = dc.get_frame()
+    ret, depth_frame, color_frame, infarad_frame, infarad_frame1 = dc.get_frame()
 
     # Detect AR markers in the color frame
     corners, ids, _ = cv2.aruco.detectMarkers(color_frame, aruco_dict, parameters=parameters)
@@ -36,12 +36,17 @@ while True:
 
     #filled_depth_image = np.asanyarray(filled_depth.get_data())
 
+    depth_frame_small = cv2.resize(depth_frame, (0, 0), fx=0.5, fy=0.5)
+    color_frame_small = cv2.resize(color_frame, (0, 0), fx=0.5, fy=0.5)
 
-    normalized_depth = cv2.normalize(depth_frame, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+
+    normalized_depth = cv2.normalize(depth_frame_small, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
     colored_depth = cv2.applyColorMap(normalized_depth, cv2.COLORMAP_JET)
-    cv2.imshow("Depth Overlaid on Color", colored_depth)
-    cv2.imshow("depth frame", depth_frame)
-    cv2.imshow("Color frame", color_frame)
+    colored_depth_small = cv2.resize(colored_depth, (255,255), fx=0.5, fy= 0.5)
+
+    cv2.imshow("Depth Overlaid on Color", colored_depth_small)
+    #cv2.imshow("depth frame", depth_frame_small)
+    cv2.imshow("Color frame", color_frame_small)
 
     key = cv2.waitKey(1)
     if key == 27:
