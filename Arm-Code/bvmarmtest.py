@@ -12,7 +12,7 @@ FOREARM_ID = 3
 WRIST_ID = 4
 CLAW_ID = 0
 
-PORT_NUM = '/dev/cu.usbserial-FT5NY9DI'
+PORT_NUM = '/dev/cu.usbserial-FT2N0BTD'
 ADDR_PRESENT_POSITION = 132
 BAUDRATE = 1000000
 
@@ -84,7 +84,31 @@ def testpullout():
     time.sleep(1)
     motor.simMotorRun([138, 75, 285], [2, 3, 4])
     time.sleep(2)
+    motor.simMotorRun([153, 50, 285], [2, 3, 4])
+    time.sleep(2)
+    motor.simMotorRun([265, 47, 170], [2, 3, 4])
+    time.sleep(2)
+    motor.simMotorRun([275], [4])
+    time.sleep(2)
     
+
+    
+
+def testpushin():
+    motor.simMotorRun([170], [4])
+    time.sleep(4)
+    motor.simMotorRun([153, 50, 285], [2, 3, 4])
+    time.sleep(2)
+    motor.simMotorRun([138, 75, 285], [2, 3, 4])
+    time.sleep(2)
+    motor.simMotorRun([145, 122, 233], [2, 3, 4])
+    time.sleep(2)
+    motor.simMotorRun([110], [0])
+    time.sleep(1)
+    motor.simMotorRun([145, 122, 233], [2, 3, 4])
+    time.sleep(2)
+    motor.simMotorRun([150, 84, 269], [2, 3, 4])
+    time.sleep(1)
 
 
 
@@ -98,3 +122,4 @@ motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])
 motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
                  
 testpullout()
+testpushin()
