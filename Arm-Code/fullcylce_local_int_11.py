@@ -35,7 +35,7 @@ def checkMovement(ids):
     finished = [1] * len(ids)
     while True:
         for id in (ids):
-            if (motor.ReadMotor(id, 122) == 0):
+            if (motor.ReadMotorData(id, 122) == 0):
                 motorStatus[id] = 1
         if (motorStatus == finished):
             break
