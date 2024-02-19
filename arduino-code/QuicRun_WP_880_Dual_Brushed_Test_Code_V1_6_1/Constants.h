@@ -13,10 +13,10 @@
 const int power = 5;                      //vcc toggle pin decleration
 const int left_servos = 6;                //left esc pin decleration
 const int right_servos = 10;              //right esc pin decleration
-const int trigFront = 7;                  //ultrasonic sensor trig pin decleration
-const int echoFront = 8;                  //ultrasonic sensor echo pin decleration
-const int trigBack = 3;                   //ultrasonic sensor trigBack pin decleration
-const int echoBack = 4;                   //ultrasonic sensor echoBack pin decleration
+const int trigFront = 7;                  //ultrasonic sensor trig pin decleration was 7
+const int echoFront = 8;                  //ultrasonic sensor echo pin decleration was 8
+const int trigBack = 3;                   //ultrasonic sensor trigBack pin decleration was 3
+const int echoBack = 4;                   //ultrasonic sensor echoBack pin decleration was 4
 const int blue_led = 11;                  //blue led pin decleration
 const int green_led = 12;                 //green led pin decleration
 
@@ -33,8 +33,8 @@ char direction;                            //direction var used to determine whi
 int midpoint = 91;
 int curr_speed = 90;
 int break_point = 85;
-int forward_speed = 101;
-int reverse_speed = 74;
+int forward_speed = 101;                  //TO GCS
+int reverse_speed = 75;                   //TP BVM
 bool is_reverse = false;
 
 String py_input;

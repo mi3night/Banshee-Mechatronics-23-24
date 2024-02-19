@@ -1,6 +1,6 @@
 // Ultrasonic Sensor testing code.
-int trigPin = 10; // Add the Trig pin on pin 10.
-int echoPin = 9; // Add the ECHO pin on pin 9.
+int trigPin = 15; // Add the Trig pin on pin 10.
+int echoPin = 14; // Add the ECHO pin on pin 9.
 int duration, distance; // Add types 'duration' and 'distance'.
 
 void setup()
