@@ -34,7 +34,7 @@ def checkMovement(ids):
             firstPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
             time.sleep(.1)
             secondPosition = motor.ReadMotorData(id, ADDR_PRESENT_POSITION)
-            if (abs(firstPosition - secondPosition) < 5):
+            if (abs(firstPosition - secondPosition) < 2):
                 motorStatus[id] = 1
         if (motorStatus == finished):
             print("finished")
