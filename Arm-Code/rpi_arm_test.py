@@ -44,7 +44,7 @@ def checkMovement(ids):
 def pullout():
         
     print("pull out start")
-    motor.dxlSetVelo([20, 20, 20, 20, 20], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
+    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     motor.simMotorRun([110, 223, 270, 47, 272], [0, 1, 2, 3, 4])  # resting
     checkMovement(MOVE_IDs)
     motor.simMotorRun([168], [2])  # back to pull down more
@@ -65,6 +65,8 @@ def pullout():
     checkMovement(MOVE_IDs)
 
 def pushin():
+    print("Push In Start")
+    motor.dxlSetVelo([30, 30, 30, 30, 30], [0, 1, 2, 3, 4])  # ALWAYS SET SPEED BEFORE ANYTHING
     motor.simMotorRun([170], [4])
     checkMovement(MOVE_IDs)
     motor.simMotorRun([153, 50, 285], [2, 3, 4])
