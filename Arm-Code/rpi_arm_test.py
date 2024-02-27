@@ -24,6 +24,7 @@ SERVER_HOST = '192.168.1.61'
 SERVER_PORT = 3300
 
 def checkMovement(ids):
+    time.sleep(0.5)
     motorStatus = [0] * len(ids)
     finished = [1] * len(ids)
     firstPosition = 0
