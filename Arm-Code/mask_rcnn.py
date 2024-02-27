@@ -5,7 +5,7 @@ import numpy as np
 class MaskRCNN:
     def __init__(self):
         # Loading Mask RCNN
-        self.net = cv2.dnn.readNetFromTensorflow("C:/Users/admin/Documents/GitHub/Banshee-Mechatronics-23-24/Arm-Code/dnn/frozen_inference_graph_coco.pb", "C:/Users/admin/Documents/GitHub/Banshee-Mechatronics-23-24/Arm-Code/dnn/mask_rcnn_inception_v2_coco_2018_01_28.pbtxt")
+        self.net = cv2.dnn.readNetFromTensorflow("./Arm-Code/dnn/frozen_inference_graph_coco.pb", "./Arm-Code/dnn/mask_rcnn_inception_v2_coco_2018_01_28.pbtxt")
 
         self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
         self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
@@ -19,7 +19,7 @@ class MaskRCNN:
         self.mask_threshold = 0.3
 
         self.classes = []
-        with open("C:/Users/admin/Documents/GitHub/Banshee-Mechatronics-23-24/Arm-Code/dnn/classes.txt", "r") as file_object:
+        with open("./Arm-Code/dnn/classes.txt", "r") as file_object:
             for class_name in file_object.readlines():
                 class_name = class_name.strip()
                 self.classes.append(class_name)
